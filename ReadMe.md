@@ -1,1 +1,0 @@
-Trabajo Backgammon - Gabriela Vaca 

@@ -1,0 +1,2 @@
+class Backgammon:
+    pass
