@@ -1,5 +1,5 @@
 import unittest
-from core.clase_backgammon import Backgammon
+from core.backgammongame import Backgammon
 
 class TestBackgammon(unittest.TestCase):
     pass

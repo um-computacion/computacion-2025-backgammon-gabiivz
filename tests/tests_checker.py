@@ -1,5 +1,5 @@
 import unittest
-from core.clase_checker import Checker
+from core.checker import Checker
 
 class TestChecker(unittest.TestCase):
     pass
