@@ -18,18 +18,35 @@ class Board:
 
         self.__board__[25] = [] #salida
 
-    def get_bar(self):
+    def get_bar(self):               #devuelve las fichas comidas
         return self.__board__[0] 
 
-    def get_salida(self):
+    def get_salida(self):          #devuelve las fichas que han salido
         return self.__board__[25] 
 
-    def distancia_blancas(self, origen, destino):
+    def distancia_blancas(self, origen, destino):    #blancas van de izq a derecha
         posicion_blanca = origen - destino 
         return posicion_blanca
 
-    def distancia_negras(self, origen, destino):
+    def distancia_negras(self, origen, destino):     #negras van de derecha a izq
         posicion_negra = destino - origen 
         return posicion_negra
     
+    def movimiento_valido(self, origen, destino, color): #que el movimiento sea valido, no pase de las 24 posiciones
+
+        if destino < 1 or destino > 24:
+            return False
+        if origen < 1 or origen > 24:
+            return False
+        if color == 'Blancas' and origen > destino:
+            return True
+        if color == 'Negras' and destino > origen:
+            return True
+        else:
+            return False
+
+
+        
+        
+        
 
