@@ -20,4 +20,33 @@ class TestBoard(unittest.TestCase):
         board = Board()
         self.assertEqual(board.get_bar(), [])
         self.assertEqual(board.get_salida(), [])
+
+    def test_distancia_blanca_valida(self):
+        board = Board()
+        origen = 12
+        destino = 7
+        self.assertEqual(board.distancia_blancas(origen, destino), 5)
+    
+    def test_distancia_blanca_no_valida(self):
+        board = Board()
+        origen = 7
+        destino = 12
+        self.assertNotEqual(board.distancia_blancas(origen, destino), 5)
+    
+    def test_distancia_negra_valida(self):
+        board = Board()
+        origen = 7
+        destino = 12
+        self.assertEqual(board.distancia_negras(origen, destino), 5)
+
+    def test_distancia_negra_no_valida(self):
+        board = Board()
+        origen = 12
+        destino = 7
+        self.assertNotEqual(board.distancia_negras(origen, destino), 5)
+
+    
+
+if __name__ == '__main__':
+    unittest.main()
        
