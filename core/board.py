@@ -24,3 +24,12 @@ class Board:
     def get_salida(self):
         return self.__board__[25] 
 
+    def distancia_blancas(self, origen, destino):
+        posicion_blanca = origen - destino 
+        return posicion_blanca
+
+    def distancia_negras(self, origen, destino):
+        posicion_negra = destino - origen 
+        return posicion_negra
+    
+
