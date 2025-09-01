@@ -45,6 +45,47 @@ class TestBoard(unittest.TestCase):
         destino = 7
         self.assertNotEqual(board.distancia_negras(origen, destino), 5)
 
+    def test_movimiento_valido_blancas(self):
+        board = Board()
+        color = 'Blancas'
+        origen = 12     
+        destino = 7
+        self.assertTrue(board.movimiento_valido(origen, destino, color ))
+    
+
+    def test_movimiento_valido_negras(self):
+        board = Board()
+        color = 'Negras'
+        origen = 7     
+        destino = 12
+        self.assertTrue(board.movimiento_valido(origen, destino, color ))
+
+    def tests_movimiento_fuera_de_tablero(self):
+        board = Board()
+        self.assertFalse(board.movimiento_valido(-2,-3,'Blancas'))
+    
+    def tests_movimiento_fuera_de_tablero2(self):
+        board = Board()
+        self.assertFalse(board.movimiento_valido(26,30,'Negras'))
+
+    def test_movimiento_blancas_incorrecto(self):
+        board = Board()
+        color = 'Blancas'
+        origen = 7     
+        destino = 12
+        self.assertFalse(board.movimiento_valido(origen, destino, color ))
+
+    def test_movimiento_negras_incorrecto(self):
+        board = Board()
+        color = 'Negras'
+        origen = 12     
+        destino = 7
+        self.assertFalse(board.movimiento_valido(origen, destino, color ))
+     
+
+
+
+
     
 
 if __name__ == '__main__':
