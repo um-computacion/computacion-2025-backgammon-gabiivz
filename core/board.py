@@ -44,6 +44,23 @@ class Board:
             return True
         else:
             return False
+    
+    def get_posicion(self, numero_pos):    #devuelve las posiciones del tablero de una ficha
+        if 0 <= numero_pos <= 25:
+            return self.__board__[numero_pos]
+        return None
+    
+    def ficha_negras_bar(self, color):     #devuelve fichas comidas de jugador con fichas negras
+        if color == 'Negras' and len(self.__board__[0]) > 0:
+            return self.__board__[0]
+        return False
+    
+    def ficha_blancas_bar(self, color):             #devuelve fichas comidas de jugador con fichas blancas
+        if color == 'Blancas' and len(self.__board__[0]) > 0:
+            return self.__board__[0]
+        return False
+    
+
 
 
         
