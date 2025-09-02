@@ -82,7 +82,32 @@ class TestBoard(unittest.TestCase):
         destino = 7
         self.assertFalse(board.movimiento_valido(origen, destino, color ))
      
+    def test_get_posicion_valida(self):
+        board = Board()
+        self.assertEqual(board.get_posicion(5), ['Blancas'] * 5)
+    
+    def test_get_posicion_no_valida(self):
+        board = Board()
+        self.assertIsNone(board.get_posicion(30))
 
+    def test_fichas_negras_bar(self):
+        board = Board()
+        board.__board__[0] = ['Negras'] * 2
+        self.assertTrue(board.ficha_negras_bar('Negras'))
+
+    def test_bar_vacio_negras(self):
+        board = Board()
+        self.assertFalse(board.ficha_negras_bar('Negras'))
+
+    def test_fichas_blancas_bar(self):
+        board = Board()
+        board.__board__[0] = ['Blancas'] * 2
+        self.assertTrue(board.ficha_blancas_bar('Blancas'))
+    
+    def test_bar_vacio_blancas(self):
+        board = Board()
+        self.assertFalse(board.ficha_blancas_bar('Blancas'))
+    
 
 
 
