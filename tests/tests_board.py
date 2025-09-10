@@ -107,11 +107,99 @@ class TestBoard(unittest.TestCase):
     def test_bar_vacio_blancas(self):
         board = Board()
         self.assertFalse(board.ficha_blancas_bar('Blancas'))
+
+    def test_destino_y_origen_invalidos(self):
+        board = Board()
+        self.assertFalse(board.movimiento_valido(0, 26, 'Blancas'))
+        self.assertFalse(board.movimiento_valido(26, 0, 'Negras'))
+
+    def test_mover_ficha_a_lugar_vacio(self):
+        board = Board()
+        board.__board__[6] = [] 
+        board.__board__[5] = ['Blancas'] * 5
+        self.assertTrue(board.mover_ficha(5, 6, 'Blancas'))
+        self.assertEqual(board.get_posicion(6), ['Blancas'])
+        self.assertEqual(board.get_posicion(5), ['Blancas'] * 4)
     
+    def test_mover_ficha_a_lugar_con_ficha_igual(self):
+        board = Board()
+        board.__board__[5] = ["Blancas"]*5
+        board.__board__[6] = ["Blancas"]*2
+        self.assertTrue(board.mover_ficha(5, 6, 'Blancas' ))    
+        self.assertEqual(board.get_posicion(6), ['Blancas'] * 3)
+        self.assertEqual(board.get_posicion(5), ['Blancas'] * 4)
 
-
-
+    def test_ficha_movida_no_existe(self):
+        board = Board()
+        board.__board__[6] = [] 
+        board.__board__[5] = [] 
+        self.assertFalse(board.mover_ficha(5, 6, 'Blancas'))
+        self.assertEqual(board.get_posicion(6), [])
+        self.assertEqual(board.get_posicion(5), [])
     
+    def test_ficha_movida_sumada(self):
+        board = Board()
+        board.__board__[6] = ['Blancas'] * 2
+        board.__board__[5] = ['Blancas'] * 3
+        self.assertTrue(board.mover_ficha(5, 6, 'Blancas'))
+        self.assertEqual(board.get_posicion(6), ['Blancas'] * 3)
+        self.assertEqual(board.get_posicion(5), ['Blancas'] * 2)
+
+    def test_mover_ficha_invalida(self):
+        board = Board()
+        board.__board__[6] = ['Negras'] * 2
+        board.__board__[5] = ['Blancas'] * 5
+        self.assertFalse(board.mover_ficha(5,6, 'Blancas'))
+        self.assertEqual(board.get_posicion(6), ['Negras'] * 2)
+        self.assertEqual(board.get_posicion(5), ['Blancas'] * 5)
+
+    def test_comer_ficha_valida(self):
+        board =Board()
+        board.__board__[6] = ['Negras']
+        board.__board__[5] = ['Blancas'] * 5
+        ficha_comida = None
+        self.assertTrue(board.comer_ficha(6, 5, 'Blancas', ficha_comida))
+        self.assertEqual(board.get_posicion(6), ['Blancas'])
+        self.assertEqual(board.get_posicion(5), ['Blancas'] * 4)       
+        self.assertEqual(board.get_bar(), ['Negras'])
+
+    def test_comer_ficha_invalida(self):
+        board = Board()
+        board.__board__[6] = ['Negras'] * 2
+        board.__board__[5] = ['Blancas'] * 5
+        ficha_comida = None
+        self.assertFalse(board.comer_ficha(6, 5, 'Blancas', ficha_comida))
+        self.assertEqual(board.get_posicion(6), ['Negras'] * 2)
+        self.assertEqual(board.get_posicion(5), ['Blancas'] * 5)
+        self.assertEqual(board.get_bar(), [])
+
+    def test_comer_ficha_vacia(self):
+        board = Board()
+        board.__board__[6] = []
+        board.__board__[5] = ['Blancas'] * 5
+        ficha = 'Blancas'
+        ficha_comida = None
+        self.assertFalse(board.comer_ficha(6, 5, ficha, ficha_comida))
+        self.assertEqual(board.get_posicion(6), [])
+        self.assertEqual(board.get_posicion(5), ['Blancas'] * 5)
+        self.assertEqual(board.get_bar(), [])
+
+    def test_mover_ficha_comida_valida(self):
+        board = Board()
+        board.__board__[0] = ['Blancas'] * 2
+        board.__board__[6] = [] 
+        self.assertTrue(board.mover_ficha_comida(6, 'Blancas'))
+        self.assertEqual(board.get_posicion(6), ['Blancas'])
+        self.assertEqual(board.__board__[0], ['Blancas'])
+    
+    def test_mover_ficha_comida_invalida(self):
+        board = Board()
+        board.__board__[0] = ['Blancas'] * 2
+        board.__board__[6] = ['Negras']
+        self.assertFalse(board.mover_ficha_comida(6, 'Blancas'))
+        self.assertEqual(board.get_posicion(6), ['Negras'])
+        self.assertEqual(board.__board__[0], ['Blancas'] * 2)
+        
 
 if __name__ == '__main__':
     unittest.main()

@@ -60,6 +60,50 @@ class Board:
             return self.__board__[0]
         return False
     
+    def mover_ficha(self, origen, destino, ficha):   #mueve la ficha de una posicion a otra vacia o con fichas del mismo color 
+        if self.__board__[origen] == [] and self.__board__[destino] == []:
+            return False
+        if self.__board__[destino] == []:
+            self.__board__[destino] = self.__board__[destino] + [ficha]
+            self.__board__[origen] = self.__board__[origen][:-1]
+            return True
+        #ahora si origen y destino tienen fichas iguales entonces puedo mover la ficha de or a destino
+        if self.__board__[origen] != [] and self.__board__[destino] != [] and self.__board__[origen][0] == self.__board__[destino][0]:
+            self.__board__[destino] = self.__board__[destino] + [ficha]
+            self.__board__[origen] = self.__board__[origen][:-1]
+            return True
+        else:
+            return False
+
+    def comer_ficha(self, destino, origen, ficha, ficha_comida):  #mueve la ficha a una posicion con una ficha del color contrario
+        if self.__board__[destino] == []:
+            return False
+        if len(self.__board__[destino]) == 1 and self.__board__[destino][0] != ficha:
+            ficha_comida = self.__board__[destino][0]
+            self.__board__[destino] = [ficha]
+            self.__board__[origen] = self.__board__[origen][:-1]
+            self.__board__[0] = self.__board__[0] + [ficha_comida]
+            return True
+        if len(self.__board__[destino]) >= 2:
+            return False
+        
+    def mover_ficha_comida(self, destino, ficha):   #mueve la ficha comida a una posicion vacia o con fichas del mismo color
+        if self.__board__[destino] == [] or self.__board__[destino] == [ficha]:
+            self.__board__[destino].append(ficha)
+            self.__board__[0] = self.__board__[0][:-1]
+            return True
+        else:
+            return False
+        
+#falta funcion para sacar las fichas del tablero una vez que todas estan en la zona de salida
+
+
+
+
+
+
+
+
 
 
 
