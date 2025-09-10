@@ -1,0 +1,29 @@
+# Automated Reports
+## Coverage Report
+```text
+Name                        Stmts   Miss Branch BrPart  Cover   Missing
+-----------------------------------------------------------------------
+core/__init__.py                0      0      0      0   100%
+core/backgammongame.py          2      2      0      0     0%   1-2
+core/board.py                  74      1     28      2    97%   40, 87->exit
+core/checker.py                 2      2      0      0     0%   1-2
+core/dice.py                   13      0      2      0   100%
+core/player.py                  6      0      0      0   100%
+tests/__init__.py               0      0      0      0   100%
+tests/tests_backgammon.py       0      0      0      0   100%
+tests/tests_board.py          172      1      2      1    99%   205
+tests/tests_checker.py          0      0      0      0   100%
+tests/tests_dice.py            60      1      2      1    97%   74
+tests/tests_player.py          22      1      2      1    92%   29
+-----------------------------------------------------------------------
+TOTAL                         351      8     36      5    97%
+
+```
+## Pylint Report
+```text
+************* Module main.py
+main.py:1:0: F0001: No module named main.py (fatal)
+************* Module test.py
+test.py:1:0: F0001: No module named test.py (fatal)
+
+```
