@@ -34,16 +34,17 @@ class Board:
     
     def movimiento_valido(self, origen, destino, color): #que el movimiento sea valido, no pase de las 24 posiciones
 
-        if destino < 1 or destino > 24:
-            return False
-        if origen < 1 or origen > 24:
-            return False
+        if destino < 1 or destino > 24 or origen < 1 or origen > 24:
+            raise ValueError("El destino debe estar entre 1 y 24")
         if color == 'Blancas' and origen > destino:
             return True
+        if color == 'Blancas' and destino > origen:
+            raise ValueError("Las fichas blancas solo pueden moverse de izquierda a derecha")
         if color == 'Negras' and destino > origen:
             return True
-        else:
-            return False
+        if color == 'Negras' and origen > destino:
+            raise ValueError("Las fichas negras solo pueden moverse de derecha a izquierda")
+
     
     def get_posicion(self, numero_pos):    #devuelve las posiciones del tablero de una ficha
         if 0 <= numero_pos <= 25:
@@ -73,19 +74,21 @@ class Board:
             self.__board__[origen] = self.__board__[origen][:-1]
             return True
         else:
-            return False
+            raise ValueError("No se puede mover la ficha a esa posicion")
 
     def comer_ficha(self, destino, origen, ficha, ficha_comida):  #mueve la ficha a una posicion con una ficha del color contrario
         if self.__board__[destino] == []:
             return False
-        if len(self.__board__[destino]) == 1 and self.__board__[destino][0] != ficha:
+        if len(self.__board__[destino]) < 2 and len(self.__board__[destino]) > 0 and self.__board__[destino][0] != ficha:
             ficha_comida = self.__board__[destino][0]
             self.__board__[destino] = [ficha]
             self.__board__[origen] = self.__board__[origen][:-1]
             self.__board__[0] = self.__board__[0] + [ficha_comida]
             return True
         if len(self.__board__[destino]) >= 2:
-            return False
+            raise ValueError("No se puede mover la ficha a esa posicion porque hay mas de una ficha del color contrario")
+
+
         
     def mover_ficha_comida(self, destino, ficha):   #mueve la ficha comida a una posicion vacia o con fichas del mismo color
         if self.__board__[destino] == [] or self.__board__[destino] == [ficha]:
@@ -95,7 +98,17 @@ class Board:
         else:
             return False
         
-#falta funcion para sacar las fichas del tablero una vez que todas estan en la zona de salida
+    def sacar_ficha(self, origen, ficha):   #saca la ficha del tablero una vez que todas las fichas estan en la zona de salida
+        if ficha == 'Blancas' and origen >= 19 and origen <= 24 and self.__board__[origen] != [] and self.__board__[origen][0] == ficha:
+            self.__board__[origen] = self.__board__[origen][:-1]
+            self.__board__[25] = self.__board__[25] + [ficha]
+            return True
+        if ficha == 'Negras' and origen >= 1 and origen <= 6 and self.__board__[origen] != [] and self.__board__[origen][0] == ficha:
+            self.__board__[origen] = self.__board__[origen][:-1]
+            self.__board__[25] = self.__board__[25] + [ficha]
+            return True
+        else:
+            raise ValueError("No se puede sacar la ficha de esa posicion")
 
 
 
