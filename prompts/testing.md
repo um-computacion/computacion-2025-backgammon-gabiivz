@@ -132,3 +132,46 @@ def test_movimientos_dobles(self):
 
 ## Restricción importante:
 No quiero modificar mi clase `Dice` existente, solo crear los tests apropiados y entender si debo mantener o eliminar mis tests previos.
+
+Prompt Desarrollo
+Herramienta utilizada:
+
+Claude
+
+Texto exacto del Prompt:
+
+"Estoy testando mi código con coverage y me dice que algunas líneas faltan que para mí están testadas, ¿es porque mi código está mal?"
+
+Respuesta de la IA (Claude):
+
+Claude explicó que no necesariamente significa que el código esté mal. Coverage puede reportar líneas faltantes por varias razones:
+
+Condiciones no evaluadas completamente → en if/elif/else hay que cubrir todos los caminos.
+
+Excepciones no probadas → si no se provoca el error, el bloque except queda sin cubrir.
+
+Código defensivo → ramas que no se ejecutan si siempre se pasan datos válidos.
+
+Métodos auxiliares → getters, setters, __str__, etc. que nunca se llaman.
+
+Luego analizamos mi caso particular:
+
+Coverage marcaba como no cubiertas las líneas 88 y 89 de board.py.
+
+Mis tests usaban assertRaises(ValueError, ...), pero Claude recomendó cambiar a with self.assertRaises(ValueError): ... para que coverage detecte mejor la ejecución.
+
+Explicó la diferencia entre ambos enfoques y mostró ejemplos de tests nuevos con 2 y 3 fichas en destino.
+
+Finalmente, al revisar el reporte HTML de coverage, vimos:
+
+Línea 88 → marcada como parcial (amarilla), porque la condición siempre fue True en mis tests, nunca probé el caso donde sea False.
+
+Línea 89 → estaba verde (cubierta).
+
+También faltaban cubrir las líneas 101–106 (sacar_ficha) y la línea 45 (otra condición siempre True).
+
+Conclusión de Claude:
+
+Mis tests funcionan, pero coverage es estricto: para llegar al 100% debo agregar un test donde la condición de la línea 88 sea False (ej. destino con solo una ficha).
+
+También cubrir el método sacar_ficha.
