@@ -175,3 +175,40 @@ Conclusión de Claude:
 Mis tests funcionan, pero coverage es estricto: para llegar al 100% debo agregar un test donde la condición de la línea 88 sea False (ej. destino con solo una ficha).
 
 También cubrir el método sacar_ficha.
+
+# Prompt: Testing de clase BackgammonGame 
+
+### Herramienta utilizada:
+ copilot
+---
+
+**¿Cómo escribo un test unitario para verificar el turno inicial en BackgammonGame?**  
+Te mostré cómo crear un test que verifica que el turno inicial es "Blancas" usando `assertEqual`.
+
+**¿Cómo testeo que el jugador actual cambia correctamente al cambiar de turno?**  
+Te ayudé a escribir tests que usan `cambio_turnos()` y verifican el jugador actual con `assertEqual` y `assertNotEqual`.
+
+**¿Cómo pruebo los métodos get_jugador_blancas y get_jugador_negras?**  
+Te mostré cómo verificar que estos métodos devuelven instancias de `Player` y que el color y nombre son correctos.
+
+**¿Cómo testeo el método que tira los dados y verifica los movimientos posibles?**  
+Te expliqué cómo probar que el método retorna una lista con 2 o 4 movimientos y cómo forzar valores en los dados para cubrir ambos casos.
+
+**¿Cómo hago un test para el caso de doble en los dados y para el caso de valores distintos?**  
+Te mostré cómo modificar los métodos de los dados en el test para simular dobles y no dobles, y verificar el resultado esperado.
+
+**¿Cómo accedo y modifico los dados privados en los tests para forzar valores?**  
+Te expliqué que puedes acceder a los atributos privados usando el nombre real (`__dado1__`) y asignar funciones lambda para controlar el resultado.
+
+**¿Cómo verifico que get_board devuelve una instancia de Board?**  
+Te mostré cómo usar `assertIsInstance` para comprobar el tipo de retorno.
+
+**¿Cómo testeo los métodos get_dados y tirar_dados para asegurar que devuelven lo esperado?**  
+Te expliqué cómo llamar a estos métodos y verificar que devuelven los valores correctos y el tipo esperado.
+
+**¿Cómo uso assertNotEqual para probar que el jugador actual no es el incorrecto?**  
+Te mostré ejemplos de tests usando `assertNotEqual` para asegurar que el jugador actual no es el del color contrario.
+
+---
+
+Así te ayudé a resolver dudas sobre testing, lógica de juego y buenas prácticas en tu proyecto Backgammon.
