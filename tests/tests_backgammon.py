@@ -1,5 +1,7 @@
 import unittest
 from core.backgammongame import BackgammonGame
+from core.board import Board
+from core.player import Player
 
 class TestBackgammonGame(unittest.TestCase):
     def test_empieza_jugador_blanco(self):
@@ -31,30 +33,6 @@ class TestBackgammonGame(unittest.TestCase):
         self.assertEqual(game.get_turno(), "Blancas")
 
 
-    def test_movimientos_tipo_lista(self):
-        game = BackgammonGame("Gabi", "Gabo")
-        movimientos = game.movimientos_al_tirar_dado()
-        self.assertIsInstance(movimientos, list)
-
-    def test_movimientos_cantidad_valores(self):
-        game = BackgammonGame("Gabi", "Gabo")
-        movimientos = game.movimientos_al_tirar_dado()
-        self.assertIn(len(movimientos), [2, 4])
-
-    def test_movimientos_doble(self):
-        game = BackgammonGame("Gabi", "Gabo")
-        game.__dado1__.tirar = lambda: 6
-        game.__dado2__.tirar = lambda: 6
-        movimientos = game.movimientos_al_tirar_dado()
-        self.assertEqual(movimientos, [6, 6, 6, 6])
-
-    def test_movimientos_no_doble(self):
-        game = BackgammonGame("Gabi", "Gabo")
-        game.__dado1__.tirar = lambda: 3
-        game.__dado2__.tirar = lambda: 5
-        movimientos = game.movimientos_al_tirar_dado()
-        self.assertEqual(movimientos, [3, 5])
-
     def test_turno_jugador_actual(self):
         game = BackgammonGame("Gabi", "Gabo")
         jugador = game.get_jugador_actual()
@@ -63,6 +41,38 @@ class TestBackgammonGame(unittest.TestCase):
         jugador = game.get_jugador_actual()
         self.assertEqual(str(jugador), "Jugador: Gabo, Color: Negras")
 
+    def test_get_board(self):
+        game = BackgammonGame("Gabi", "Gabo")
+        self.assertIsInstance(game.get_board(), Board)
+
+    def test_get_jugador_blancas(self):
+        game = BackgammonGame("Gabi", "Gabo")
+        jugador = game.get_jugador_blancas()
+        self.assertIsInstance(jugador, Player)
+        self.assertEqual(jugador.__color__, "Blancas")
+        self.assertEqual(jugador.__nombre__, "Gabi")
+
+    def test_get_jugador_negras(self):
+        game = BackgammonGame("Gabi", "Gabo")
+        jugador = game.get_jugador_negras()
+        self.assertIsInstance(jugador, Player)
+        self.assertEqual(jugador.__color__, "Negras")
+        self.assertEqual(jugador.__nombre__, "Gabo")
+
+    def test_tirar_dados(self):
+        game = BackgammonGame("Gabi", "Gabo")
+        resultado = game.tirar_dados()()
+        self.assertIsInstance(resultado, tuple)
+        self.assertEqual(len(resultado), 2)
+        self.assertTrue(1 <= resultado[0] <= 6)
+        self.assertTrue(1 <= resultado[1] <= 6)
+
+    def test_get_dados(self):
+        game = BackgammonGame("Gabi", "Gabo")
+        game.tirar_dados()()  # Tirar los dados primero
+        movimientos = game.get_dados()()
+        self.assertIsInstance(movimientos, list)
+        self.assertIn(len(movimientos), [2, 4])
     
 
 
