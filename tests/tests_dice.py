@@ -69,6 +69,18 @@ class TestDice(unittest.TestCase):
             self.assertTrue(randint_patched.called)
             self.assertEqual(randint_patched.call_count, 2)
 
+    def test_reiniciar_dados(self):
+        dado = Dice()
+        # Simula que los dados tienen valores distintos de cero
+        dado.dado1 = 5
+        dado.dado2 = 3
+        # Llama al método reiniciar_dados
+        dado.reiniciar_dados()
+        # Verifica que los atributos privados sean 0
+        self.assertEqual(dado.__dado1__, 0)
+        self.assertEqual(dado.__dado2__, 0)
+
+
 
 if __name__ == '__main__':
     unittest.main()

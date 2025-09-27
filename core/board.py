@@ -24,6 +24,7 @@ class Board:
     def get_salida(self):          #devuelve las fichas que han salido
         return self.__board__[25] 
 
+    
     def distancia_blancas(self, origen, destino):    #blancas van de izq a derecha
         posicion_blanca = origen - destino 
         return posicion_blanca
