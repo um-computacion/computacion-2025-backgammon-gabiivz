@@ -22,6 +22,11 @@ class Dice:
             return [self.dado1]*4
         else:
             return [self.dado1, self.dado2]
+    
+    def reiniciar_dados(self):
+        self.__dado1__ = 0
+        self.__dado2__ = 0
+        return self.__dado1__, self.__dado2__
 
     
     

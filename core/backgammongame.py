@@ -10,6 +10,8 @@ class BackgammonGame:
         self.__dado__ = Dice()
         self.__jugador_blancas__ = Player(nombre_blancas, "Blancas")
         self.__jugador_negras__ = Player(nombre_negras, "Negras")
+        self.__fichas_blancas__ = Checker("Blancas", "Blancas", self.__jugador_blancas__)
+        self.__fichas_negras__ = Checker("Negras", "Negras", self.__jugador_negras__)
 
     def get_board(self):
         return self.__board__
@@ -40,8 +42,19 @@ class BackgammonGame:
     
     def get_dados(self):
         return self.__dado__.movimientos
+    
+    
+    def get_ganador(self):
+        """Devuelve el nombre del jugador ganador si ya sacó todas sus fichas, sino None."""
+        blancas_sacadas = len(self.__fichas_blancas__.get_fichas_sacadas_blancas())
+        negras_sacadas = len(self.__fichas_negras__.get_fichas_sacadas_negras())
+        if blancas_sacadas == 15:
+            return self.__jugador_blancas__.get_nombre()
+        if negras_sacadas == 15:
+            return self.__jugador_negras__.get_nombre()
+        return None
 
-
+    
 
 
 

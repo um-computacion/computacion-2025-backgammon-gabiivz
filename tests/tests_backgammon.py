@@ -2,6 +2,7 @@ import unittest
 from core.backgammongame import BackgammonGame
 from core.board import Board
 from core.player import Player
+from core.checker import Checker
 
 class TestBackgammonGame(unittest.TestCase):
     def test_empieza_jugador_blanco(self):
@@ -74,6 +75,16 @@ class TestBackgammonGame(unittest.TestCase):
         self.assertIsInstance(movimientos, list)
         self.assertIn(len(movimientos), [2, 4])
     
+    
+    #def test_ganador_valido(self):  ARREGLAR
+     #   game = BackgammonGame("Gabi", "Gabo")
+      #  game.get_ganador 
+       # self.assertEqual(game.get_ganador(), "Gabi")
+
+
+    def test_ganador_no_valido(self):
+        game = BackgammonGame("Gabi", "Gabo")
+        self.assertIsNone(game.get_ganador())
 
 
 if __name__ == '__main__':
