@@ -212,3 +212,46 @@ Te mostré ejemplos de tests usando `assertNotEqual` para asegurar que el jugado
 ---
 
 Así te ayudé a resolver dudas sobre testing, lógica de juego y buenas prácticas en tu proyecto Backgammon.
+
+# Prompt: Debug y Testing de Función Python
+
+## Contexto
+El usuario presenta el siguiente código Python con errores y solicita testing:
+
+```python
+def mover_ficha(self, origen, destino):
+    ficha = self.get_jugador_actual().__color__
+    if self.__board__.ficha_negras_bar(ficha) or self.__board__.ficha_blancas_bar(ficha):
+        raise ValueError("No puedes mover fichas normales si tienes fichas comidas en la barra")
+    if not self.validar_movimiento(origen, destino):
+        raise ValueError("Movimiento no válido según los dados")
+    if not self.mover_ficha(origen, destino, ficha):
+        ficha_comida = None
+        if not self.__board__.comer_ficha(destino, origen, ficha, ficha_comida):
+            raise ValueError("No se puede mover la ficha a esa posicion") testeame todo hice bien simple
+```
+
+## Solicitud del usuario
+"testeame todo hice bien simple"
+
+Posteriormente aclara: "es una funcion solo testa eso porfavor" y "solo esas lineas que te pase testeame"
+
+## Problema identificado
+El código contiene recursión infinita en la línea:
+```python
+if not self.mover_ficha(origen, destino, ficha):
+```
+
+Esta línea llama al mismo método desde dentro de sí mismo, creando un bucle infinito.
+
+## Tarea
+1. Crear un test simple que demuestre el problema
+2. Mostrar que el código falla con `RecursionError`
+3. Identificar específicamente la línea problemática
+4. Sugerir que debería ser `self.__board__.mover_ficha()` en lugar de `self.mover_ficha()`
+
+## Estilo de respuesta esperado
+- Test directo y simple
+- Identificación clara del error
+- Explicación concisa del problema
+- No sobrecorregir el código, solo testear lo que se proporciona
