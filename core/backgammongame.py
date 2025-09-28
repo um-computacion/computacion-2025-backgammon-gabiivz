@@ -43,6 +43,37 @@ class BackgammonGame:
     def get_dados(self):
         return self.__dado__.movimientos
     
+    def mover_ficha(self, origen, destino):
+        origen = int(origen)
+        destino = int(destino)
+
+    # Validar si hay fichas en el bar
+        if len(self.__board__.get_bar()) > 0:
+            raise ValueError("No puedes mover fichas porque tenés fichas en el bar.")
+
+        ficha = self.__board__.get_posicion(origen)
+
+    # Validar que hay una ficha en la posición origen
+        if not ficha:
+            raise ValueError("No hay ficha en la posición de origen.")
+
+    # Calcular el movimiento dependiendo del color
+        if ficha == "Blancas":
+            movida = destino - origen
+        else:
+            movida = origen - destino
+
+    # Verificar si el movimiento está permitido por los dados
+        if movida in self.__dado__.movimientos:
+            if self.__board__.mover_ficha(origen, destino, ficha):
+                return True
+            else:
+                raise ValueError("No se puede mover la ficha a esa posición.")
+        else:
+            raise ValueError("Movimiento no válido según los dados.")
+
+
+
     
     def get_ganador(self):
         """Devuelve el nombre del jugador ganador si ya sacó todas sus fichas, sino None."""
