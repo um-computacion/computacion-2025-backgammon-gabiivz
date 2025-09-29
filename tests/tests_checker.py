@@ -39,13 +39,27 @@ class TestChecker(unittest.TestCase):
         checker.agregar_ficha_sacada_blancas("Blancas")
         checker.agregar_ficha_sacada_blancas("Blancas")
         self.assertEqual(checker.get_fichas_sacadas_blancas(), ["Blancas", "Blancas"])
+        with self.assertRaises(ValueError):
+            checker.agregar_ficha_sacada_blancas("Negras")
 
     def test_get_fichas_sacadas_negras_varias(self):
         checker = Checker("Negras", "Negras", "Luis")
         checker.agregar_ficha_sacada_negras("Negras")
         checker.agregar_ficha_sacada_negras("Negras")
         self.assertEqual(checker.get_fichas_sacadas_negras(), ["Negras", "Negras"])
+        with self.assertRaises(ValueError):
+            checker.agregar_ficha_sacada_negras("Blancas")
     
+    def test_get_fichas_sacadas_blancas_y_negras(self):
+        checker = Checker("Blancas", "Blancas", "Gabi")
+    # Agrega fichas de ambos colores
+        checker.__fichas_sacadas__ = ["Blancas", "Negras", "Blancas", "Negras", "Blancas"]
+    # Test para blancas
+        blancas = checker.get_fichas_sacadas_blancas()
+        self.assertEqual(blancas, ["Blancas", "Blancas", "Blancas"])
+    # Test para negras
+        negras = checker.get_fichas_sacadas_negras()
+        self.assertEqual(negras, ["Negras", "Negras"])
 
     
 if __name__ == '__main__':

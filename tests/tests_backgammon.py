@@ -86,74 +86,48 @@ class TestBackgammonGame(unittest.TestCase):
         game = BackgammonGame("Gabi", "Gabo")
         self.assertIsNone(game.get_ganador())
 
-
-
     def test_mover_ficha_con_fichas_en_bar(self):
         game = BackgammonGame("Gabi", "Gabo")
         board = game.get_board()
-
-        # Agregamos ficha al bar
+    # Agregamos ficha al bar
         board.__board__[0] = ["Blancas"]
-
-        # Intentar mover desde 1 a 5
+    # Intentar mover desde 1 a 5
         board.__board__[1] = ["Blancas"]
         board.__board__[5] = []
-
         game.__dado__.movimientos = [4]
-
         with self.assertRaises(ValueError):
             game.mover_ficha(1, 5)
 
     def test_mover_ficha_movimiento_no_en_dados(self):
         game = BackgammonGame("Gabi", "Gabo")
         board = game.get_board()
-
-        # No hay fichas en el bar
+    # No hay fichas en el bar
         board.__board__[0] = []
-
-        # Movimiento es de 1 a 5 (4), pero dado no lo permite
+    # Movimiento es de 1 a 5 (4), pero dado no lo permite
         board.__board__[1] = ["Blancas"]
         board.__board__[5] = []
-
         game.__dado__.movimientos = [3]  # 4 no está en los dados
-
         with self.assertRaises(ValueError):
             game.mover_ficha(1, 5)
 
     def test_mover_ficha_sin_ficha_en_origen(self):
         game = BackgammonGame("Gabi", "Gabo")
         board = game.get_board()
-
-        # No hay fichas en la posición 1
+    # No hay fichas en la posición 1
         board.__board__[1] = []
         board.__board__[5] = []
-
         game.__dado__.movimientos = [4]
-
         with self.assertRaises(ValueError):
             game.mover_ficha(1, 5)
 
     def test_mover_ficha_no_permitido_por_board(self):
         game = BackgammonGame("Gabi", "Gabo")
         board = game.get_board()
-
         board.__board__[1] = ["Blancas"]
-        board.__board__[5] = []
-
-        # Los dados permiten el movimiento
+        board.__board__[5] = ["Negras"] * 2  # Destino ocupado por fichas del color contrario
         game.__dado__.movimientos = [4]
-
-        # Simular que board.mover_ficha devuelve False
-        original_mover = board.mover_ficha
-        board.mover_ficha = lambda o, d, f: False
-
         with self.assertRaises(ValueError):
             game.mover_ficha(1, 5)
-
-        # Restaurar el método original
-        board.mover_ficha = original_mover
-        
-
 
 
 if __name__ == '__main__':

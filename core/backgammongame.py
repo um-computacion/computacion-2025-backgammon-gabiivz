@@ -31,7 +31,6 @@ class BackgammonGame:
     def get_turno(self):
         return self.__turno__
     
-    
     def cambio_turnos(self):   #creo que hay una regla agregar despues con excepcion y cuando ya haya sacado todas las fichas cambia
         if self.__turno__ == "Blancas":
             self.__turno__ = "Negras"
@@ -46,23 +45,18 @@ class BackgammonGame:
     def mover_ficha(self, origen, destino):
         origen = int(origen)
         destino = int(destino)
-
     # Validar si hay fichas en el bar
         if len(self.__board__.get_bar()) > 0:
             raise ValueError("No puedes mover fichas porque tenés fichas en el bar.")
-
         ficha = self.__board__.get_posicion(origen)
-
     # Validar que hay una ficha en la posición origen
         if not ficha:
             raise ValueError("No hay ficha en la posición de origen.")
-
     # Calcular el movimiento dependiendo del color
         if ficha == "Blancas":
             movida = destino - origen
         else:
             movida = origen - destino
-
     # Verificar si el movimiento está permitido por los dados
         if movida in self.__dado__.movimientos:
             if self.__board__.mover_ficha(origen, destino, ficha):
@@ -72,9 +66,6 @@ class BackgammonGame:
         else:
             raise ValueError("Movimiento no válido según los dados.")
 
-
-
-    
     def get_ganador(self):
         """Devuelve el nombre del jugador ganador si ya sacó todas sus fichas, sino None."""
         blancas_sacadas = len(self.__fichas_blancas__.get_fichas_sacadas_blancas())
