@@ -232,9 +232,7 @@ def mover_ficha(self, origen, destino):
 ```
 
 ## Solicitud del usuario
-"testeame todo hice bien simple"
-
-Posteriormente aclara: "es una funcion solo testa eso porfavor" y "solo esas lineas que te pase testeame"
+"ayudame a testear esta funcion"
 
 ## Problema identificado
 El código contiene recursión infinita en la línea:

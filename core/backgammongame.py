@@ -2,6 +2,7 @@ from core.board import Board
 from core.dice import Dice
 from core.player import Player
 from core.checker import Checker
+from core.exceptions import BackgammonError, MovimientoInvalidoError, FichaEnBarError, DadoNoDisponibleError, PuntoOcupadoError, DireccionInvalidaError, MovimientoFueraDeRangoError, SinMovimientosPosiblesError, TurnoInvalidoError, DadosNoTiradosError, PartidaFinalizadaError
 
 class BackgammonGame:
     def __init__(self, nombre_blancas, nombre_negras):
@@ -45,26 +46,45 @@ class BackgammonGame:
     def mover_ficha(self, origen, destino):
         origen = int(origen)
         destino = int(destino)
-    # Validar si hay fichas en el bar
+        jugador = self.get_jugador_actual()
+        color = jugador.get_color()
+        # Si hay fichas en el bar, deben moverse primero
         if len(self.__board__.get_bar()) > 0:
-            raise ValueError("No puedes mover fichas porque tenés fichas en el bar.")
-        ficha = self.__board__.get_posicion(origen)
-    # Validar que hay una ficha en la posición origen
-        if not ficha:
-            raise ValueError("No hay ficha en la posición de origen.")
-    # Calcular el movimiento dependiendo del color
-        if ficha == "Blancas":
-            movida = destino - origen
+            if origen != 0:  # 0 = bar
+                raise FichaEnBarError("Debes mover primero las fichas del bar.")
+            if not self.__board__.mover_ficha_comida(destino, color):
+                raise PuntoOcupadoError("No puedes ingresar la ficha del bar en ese punto.")
+        # Calcular la distancia y gastar el dado
+            movida = self._calcular_distancia(origen, destino, color)
+            if movida not in self.__dado__.movimientos:
+                raise DadoNoDisponibleError(f"Necesitas un dado de valor {movida}.")
+            self.__dado__.movimientos.remove(movida)
+            return True
+        # Validar movimiento según dirección
+        self.__board__.movimiento_valido(origen, destino, color)
+        # Calcular distancia
+        movida = self._calcular_distancia(origen, destino, color)
+        # Verificar que el movimiento esté en los dados
+        if movida not in self.__dado__.movimientos:
+            raise DadoNoDisponibleError(f"Necesitas un dado de valor {movida}.")
+        # Intentar comer ficha si hay una sola contraria
+        if self.__board__.comer_ficha(destino, origen, color, None):
+            self.__dado__.movimientos.remove(movida)
+            return True
+        # Sino mover normalmente
+        if self.__board__.mover_ficha(origen, destino, color):
+            self.__dado__.movimientos.remove(movida)
+            return True
+        raise MovimientoInvalidoError("No se pudo completar el movimiento.")
+
+    # Método auxiliar para eliminar duplicación
+    def _calcular_distancia(self, origen, destino, color):
+        """Calcula la distancia según el color del jugador."""
+        if color == "Blancas":
+            return self.__board__.distancia_blancas(origen, destino)
         else:
-            movida = origen - destino
-    # Verificar si el movimiento está permitido por los dados
-        if movida in self.__dado__.movimientos:
-            if self.__board__.mover_ficha(origen, destino, ficha):
-                return True
-            else:
-                raise ValueError("No se puede mover la ficha a esa posición.")
-        else:
-            raise ValueError("Movimiento no válido según los dados.")
+            return self.__board__.distancia_negras(origen, destino)
+
 
     def get_ganador(self):
         """Devuelve el nombre del jugador ganador si ya sacó todas sus fichas, sino None."""

@@ -1,10 +1,10 @@
 Name                     Stmts   Miss Branch BrPart  Cover   Missing
 --------------------------------------------------------------------
 core\__init__.py             0      0      0      0   100%
-core\backgammongame.py      57      6     18      4    84%   57, 62-65, 74, 76
-core\board.py               85      0     34      2    98%   46->exit, 89->exit
+core\backgammongame.py      72     30     24      2    50%   47-78, 83-86, 94, 96
+core\board.py               85      0     34      2    98%   45->exit, 88->exit
 core\checker.py             30      0     12      0   100%
-core\dice.py                17      0      2      0   100%
-core\player.py               8      0      0      0   100%
+core\dice.py                24      0      4      0   100%
+core\player.py              10      1      0      0    90%   13
 --------------------------------------------------------------------
-TOTAL                      197      6     66      6    95%
+TOTAL                      221     31     74      4    83%
