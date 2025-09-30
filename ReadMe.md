@@ -199,33 +199,6 @@ Ser el primero en mover todas tus fichas a tu casa (cuadrante final) y luego sac
 * **pylint**: Linter para calidad de código
 
 ---
-
-## 📝 Notas de desarrollo
-
-Este proyecto fue desarrollado siguiendo buenas prácticas de programación:
-
-* **Arquitectura modular**: Separación clara de responsabilidades
-* **Testing exhaustivo**: Cobertura superior al 90%
-* **Manejo de excepciones**: Errores específicos y descriptivos
-* **Documentación**: Código comentado y documentado
-* **Control de versiones**: Uso de Git con commits descriptivos
-
----
-
-## 📄 Licencia
-
-Este proyecto es parte del curso de Ingeniería en Informática - 2025
-
----
-
-## 👥 Autor
-
-**Gabriela Ivañez**  
-Estudiante de Ingeniería en Informática  
-Universidad Tecnológica Nacional
-
----
-
 ## 🔗 Enlaces útiles
 
 * [Reglas oficiales del Backgammon](https://bkgm.com/rules.html)
