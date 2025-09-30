@@ -43,47 +43,35 @@ class BackgammonGame:
     def get_dados(self):
         return self.__dado__.movimientos
     
+    def usar_dados(self, valid):
+        movimiento = self.__dado__.movimientos
+        if valid in movimiento:
+            movimiento.remove(valid)
+        else:
+            raise DadoNoDisponibleError("Ese valor del dado no está disponible.")
+    
     def mover_ficha(self, origen, destino):
+        ficha = self.get_jugador_actual().get_color()
         origen = int(origen)
         destino = int(destino)
-        jugador = self.get_jugador_actual()
-        color = jugador.get_color()
         # Si hay fichas en el bar, deben moverse primero
         if len(self.__board__.get_bar()) > 0:
             if origen != 0:  # 0 = bar
                 raise FichaEnBarError("Debes mover primero las fichas del bar.")
-            if not self.__board__.mover_ficha_comida(destino, color):
+            if not self.__board__.mover_ficha_comida(destino, ficha):
                 raise PuntoOcupadoError("No puedes ingresar la ficha del bar en ese punto.")
-        # Calcular la distancia y gastar el dado
-            movida = self._calcular_distancia(origen, destino, color)
-            if movida not in self.__dado__.movimientos:
-                raise DadoNoDisponibleError(f"Necesitas un dado de valor {movida}.")
-            self.__dado__.movimientos.remove(movida)
-            return True
-        # Validar movimiento según dirección
-        self.__board__.movimiento_valido(origen, destino, color)
-        # Calcular distancia
-        movida = self._calcular_distancia(origen, destino, color)
-        # Verificar que el movimiento esté en los dados
-        if movida not in self.__dado__.movimientos:
-            raise DadoNoDisponibleError(f"Necesitas un dado de valor {movida}.")
-        # Intentar comer ficha si hay una sola contraria
-        if self.__board__.comer_ficha(destino, origen, color, None):
-            self.__dado__.movimientos.remove(movida)
-            return True
-        # Sino mover normalmente
-        if self.__board__.mover_ficha(origen, destino, color):
-            self.__dado__.movimientos.remove(movida)
-            return True
-        raise MovimientoInvalidoError("No se pudo completar el movimiento.")
-
-    # Método auxiliar para eliminar duplicación
-    def _calcular_distancia(self, origen, destino, color):
-        """Calcula la distancia según el color del jugador."""
-        if color == "Blancas":
-            return self.__board__.distancia_blancas(origen, destino)
+        if self.__dado__.movimientos == []:
+            raise DadosNoTiradosError("Debes tirar los dados antes de mover.")
+        if ficha == "Blancas":
+            movida = origen - destino
         else:
-            return self.__board__.distancia_negras(origen, destino)
+            movida = destino - origen
+        #if movida not in self.__dado__.movimientos:
+         #   raise MovimientoFueraDeRangoError("El movimiento está fuera del rango permitido por los dados.")
+        # Validar movimiento según dirección
+        self.__board__.movimiento_valido(origen, destino, ficha)
+        self.__board__.mover_ficha(origen, destino)
+        self.usar_dados(movida)
 
 
     def get_ganador(self):
