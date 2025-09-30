@@ -1,6 +1,6 @@
 # 🎲 Backgammon
 
-**Alumno:** Ivañez Gabriela  
+**Alumno:** Gabriela Vaca
 **Carrera:** Ingeniería en Informática  
 **Ciclo lectivo:** 2025
 
@@ -38,12 +38,6 @@ cd backgammon-gabiivz
 ```
 
 ### 2. Crear un entorno virtual
-
-**Linux/Mac:**
-```bash
-python3 -m venv venv
-source venv/bin/activate
-```
 
 **Windows:**
 ```bash

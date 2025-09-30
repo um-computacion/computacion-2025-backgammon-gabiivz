@@ -1,9 +1,7 @@
 class Board:
     
     def __init__(self):
-        self.__board__ = [None] * 26  #de 0 a 25, 2 demas, (0) que se va a referir al bar, donde van las fichas "comidas" 
-                                      # y luego 25 que se va a referir a donde salen las fichas 
-
+        self.__board__ = [[] for _ in range(26)] #de 0 a 25, 2 demas, (0) que se va a referir al bar, donde van las fichas "comidas" y luego 25 que se va a referir a donde salen las fichas 
         self.__board__[0] = [] #bar
 
         self.__board__[5] = ['Blancas'] * 5    
