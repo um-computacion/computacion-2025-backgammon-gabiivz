@@ -9,6 +9,8 @@ class Player:
     # definiendo nombre y ficha(color) de jugador
     def get_nombre(self):
         return self.__nombre__
+    def get_color(self):
+        return self.__color__
 
 
         

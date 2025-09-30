@@ -12,75 +12,82 @@ class TestDice(unittest.TestCase):
         dado = Dice()
         self.assertFalse(any( x <1 or x >6 for x in dado.tirar()))
     
-    def test_movimientos_no_dobles(self):
+    def test_inicializacion(self):
+        """Test que los dados se inicializan correctamente."""
         dado = Dice()
-        dado.dado1 = 3
-        dado.dado2 = 5
-        self.assertEqual(dado.movimientos(), [3,5])
-    
-    def test_movimientos_dobles(self):
-        dado = Dice()
-        dado.dado1 = 4
-        dado.dado2 = 4  
-        self.assertEqual(dado.movimientos(), [4,4,4,4])
+        self.assertEqual(dado.movimientos, [])
 
     @patch('random.randint', side_effect=[5, 2])
-    def test_simple(self, randint_patched):
+    def test_tirar_dados_simples(self, randint_patched):
+        """Test tirar dados no dobles."""
         dado = Dice()
-        dado.tirar()
-        dice = dado.movimientos()
-        self.assertEqual(len(dice), 2)
-        self.assertEqual(dice[0], 5)
-        self.assertEqual(dice[1], 2)
-        self.assertTrue(randint_patched.called)
+        resultado = dado.tirar()
+        
+        self.assertEqual(resultado, (5, 2))
+        self.assertEqual(dado.movimientos, [5, 2])
         self.assertEqual(randint_patched.call_count, 2)
 
-    # Test dobles: testea que si salen dobles, se devuelven 4 movimientos iguales
-    @patch('random.randint', return_value=3)
-    def test_dobles(self, randint_patched):
+    @patch('random.randint', return_value=4)
+    def test_tirar_dados_dobles(self, randint_patched):
+        """Test tirar dados dobles (4 movimientos)."""
         dado = Dice()
-        dado.tirar()
-        dice = dado.movimientos()
-        self.assertEqual(len(dice), 4)
-        self.assertEqual(dice[0], 3)
-        self.assertEqual(dice[1], 3)
-        self.assertEqual(dice[2], 3)
-        self.assertEqual(dice[3], 3)
-        self.assertTrue(randint_patched.called)
+        resultado = dado.tirar()
+        
+        self.assertEqual(resultado, (4, 4))
+        self.assertEqual(dado.movimientos, [4, 4, 4, 4])
         self.assertEqual(randint_patched.call_count, 2)
 
-    #test error: verifica que si hay un error en random.randint, se maneja correctamente
+    def test_usar_dado_exitoso(self):
+        """Test que usar_dado() remueve correctamente un dado."""
+        with patch('random.randint', side_effect=[3, 5]):
+            dado = Dice()
+            dado.tirar()
+            
+            dado.usar_dado(3)
+            self.assertEqual(dado.movimientos, [5])
+            
+            dado.usar_dado(5)
+            self.assertEqual(dado.movimientos, [])
+    
+    def test_usar_dado_no_disponible(self):
+        """Test error al usar un dado que no está disponible."""
+        with patch('random.randint', side_effect=[3, 5]):
+            dado = Dice()
+            dado.tirar()
+            
+            with self.assertRaises(ValueError):
+                dado.usar_dado(6)
+
+    def test_tiene_movimientos(self):
+        """Test verificar si quedan dados disponibles."""
+        dado = Dice()
+        self.assertFalse(dado.tiene_movimientos())
+        
+        with patch('random.randint', side_effect=[2, 4]):
+            dado.tirar()
+            self.assertTrue(dado.tiene_movimientos())
+            
+            dado.usar_dado(2)
+            dado.usar_dado(4)
+            self.assertFalse(dado.tiene_movimientos())
+
+    def test_reiniciar_dados(self):
+        """Test que reiniciar_dados() resetea todo."""
+        with patch('random.randint', side_effect=[5, 3]):
+            dado = Dice()
+            dado.tirar()
+            
+            resultado = dado.reiniciar_dados()
+            
+            self.assertEqual(resultado, (0, 0))
+            self.assertEqual(dado.movimientos, [])
+
     @patch('random.randint', side_effect=Exception("Error de dados!"))
-    def test_error(self, randint_patched):
+    def test_error_al_tirar(self, randint_patched):
+        """Test que se maneja error en random.randint."""
         dado = Dice()
         with self.assertRaises(Exception):
             dado.tirar()
-        self.assertTrue(randint_patched.called)
-        self.assertEqual(randint_patched.call_count, 1)
-    
-    
-    def test_multiples_casos(self):
-        with patch('random.randint', side_effect=[4, 1]) as randint_patched:
-            dado = Dice()
-            dado.tirar()
-            dice = dado.movimientos()
-            self.assertEqual(len(dice), 2)
-            self.assertEqual(dice, [4, 1])
-            self.assertTrue(randint_patched.called)
-            self.assertEqual(randint_patched.call_count, 2)
-
-    def test_reiniciar_dados(self):
-        dado = Dice()
-        # Simula que los dados tienen valores distintos de cero
-        dado.dado1 = 5
-        dado.dado2 = 3
-        # Llama al método reiniciar_dados
-        dado.reiniciar_dados()
-        # Verifica que los atributos privados sean 0
-        self.assertEqual(dado.__dado1__, 0)
-        self.assertEqual(dado.__dado2__, 0)
-
-
 
 if __name__ == '__main__':
     unittest.main()

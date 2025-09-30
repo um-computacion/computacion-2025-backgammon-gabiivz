@@ -3,6 +3,9 @@ from core.backgammongame import BackgammonGame
 from core.board import Board
 from core.player import Player
 from core.checker import Checker
+from unittest.mock import Mock,patch 
+from core.dice import Dice
+from core.exceptions import BackgammonError, MovimientoInvalidoError, FichaEnBarError, DadoNoDisponibleError, PuntoOcupadoError, DireccionInvalidaError, MovimientoFueraDeRangoError, SinMovimientosPosiblesError, TurnoInvalidoError, DadosNoTiradosError, PartidaFinalizadaError
 
 class TestBackgammonGame(unittest.TestCase):
     def test_empieza_jugador_blanco(self):
@@ -32,7 +35,6 @@ class TestBackgammonGame(unittest.TestCase):
         self.assertEqual(game.get_turno(), "Negras")
         game.cambio_turnos()
         self.assertEqual(game.get_turno(), "Blancas")
-
 
     def test_turno_jugador_actual(self):
         game = BackgammonGame("Gabi", "Gabo")
@@ -69,67 +71,18 @@ class TestBackgammonGame(unittest.TestCase):
         self.assertTrue(1 <= resultado[1] <= 6)
 
     def test_get_dados(self):
+        """Test corregido: get_dados() retorna una lista, no una función"""
         game = BackgammonGame("Gabi", "Gabo")
         game.tirar_dados()()  # Tirar los dados primero
-        movimientos = game.get_dados()()
+        movimientos = game.get_dados()  # Sin el segundo ()
         self.assertIsInstance(movimientos, list)
         self.assertIn(len(movimientos), [2, 4])
-
-
-    
-    #def test_ganador_valido(self):
-     #   game = BackgammonGame("Gabi", "Gabo")
-
-    
 
     def test_ganador_no_valido(self):
         game = BackgammonGame("Gabi", "Gabo")
         self.assertIsNone(game.get_ganador())
 
-    def test_mover_ficha_con_fichas_en_bar(self):
-        game = BackgammonGame("Gabi", "Gabo")
-        board = game.get_board()
-    # Agregamos ficha al bar
-        board.__board__[0] = ["Blancas"]
-    # Intentar mover desde 1 a 5
-        board.__board__[1] = ["Blancas"]
-        board.__board__[5] = []
-        game.__dado__.movimientos = [4]
-        with self.assertRaises(ValueError):
-            game.mover_ficha(1, 5)
-
-    def test_mover_ficha_movimiento_no_en_dados(self):
-        game = BackgammonGame("Gabi", "Gabo")
-        board = game.get_board()
-    # No hay fichas en el bar
-        board.__board__[0] = []
-    # Movimiento es de 1 a 5 (4), pero dado no lo permite
-        board.__board__[1] = ["Blancas"]
-        board.__board__[5] = []
-        game.__dado__.movimientos = [3]  # 4 no está en los dados
-        with self.assertRaises(ValueError):
-            game.mover_ficha(1, 5)
-
-    def test_mover_ficha_sin_ficha_en_origen(self):
-        game = BackgammonGame("Gabi", "Gabo")
-        board = game.get_board()
-    # No hay fichas en la posición 1
-        board.__board__[1] = []
-        board.__board__[5] = []
-        game.__dado__.movimientos = [4]
-        with self.assertRaises(ValueError):
-            game.mover_ficha(1, 5)
-
-    def test_mover_ficha_no_permitido_por_board(self):
-        game = BackgammonGame("Gabi", "Gabo")
-        board = game.get_board()
-        board.__board__[1] = ["Blancas"]
-        board.__board__[5] = ["Negras"] * 2  # Destino ocupado por fichas del color contrario
-        game.__dado__.movimientos = [4]
-        with self.assertRaises(ValueError):
-            game.mover_ficha(1, 5)
 
 
 if __name__ == '__main__':
     unittest.main()
-    

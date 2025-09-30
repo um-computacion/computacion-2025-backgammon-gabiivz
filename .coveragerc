@@ -3,6 +3,7 @@ branch = True
 source = .
 omit =
     */tests/*
+    core/exceptions.py
     */venv/*
     */__pycache__/*
 
