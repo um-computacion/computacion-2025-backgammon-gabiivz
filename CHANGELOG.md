@@ -27,6 +27,29 @@ El formato sigue Keep a Changelog y el proyecto utiliza Semantic Versioning.
 ### Removed
 - Se eliminaron tests redundantes y se consolidaron casos similares para simplificar la suite de pruebas.
 
+## [1.2.0] - Tercer Sprint
+
+### Added
+- Se implementaron múltiples funcionalidades nuevas en la clase BackgammonGame:
+  - Método verificar_fin_juego para detectar cuando un jugador ha retirado todas sus fichas.
+  - Método obtener_movimientos_validos que retorna todos los movimientos posibles para el turno actual.
+  - Método puede_mover para verificar si un jugador tiene al menos un movimiento legal disponible.
+  - Sistema de validación de entrada de usuario para coordenadas del tablero.
+- Se agregaron tests exhaustivos para todas las nuevas funcionalidades, aumentando significativamente el coverage del proyecto.
+- Se implementaron tests de integración que prueban escenarios completos de juego desde inicio hasta fin.
+- Se añadieron tests para casos edge como tableros vacíos, múltiples fichas en el banco y situaciones de bloqueo.
+
+### Changed
+- Se refactorizó el método mover_ficha en BackgammonGame para mejorar la legibilidad y mantenibilidad del código.
+- Se optimizó el método reingresar_ficha para reducir la complejidad ciclomática.
+- Se actualizó la lógica de cambio de turnos para manejar correctamente los casos donde un jugador no puede mover.
+- Se mejoró la documentación interna de los métodos en BackgammonGame con docstrings más descriptivos.
+
+### Fixed
+- Se corrigió un bug en el método ganador que no detectaba correctamente la victoria cuando la última ficha era retirada.
+- Se solucionó un problema en posiciones que no validaba correctamente las fichas en posiciones intermedias antes de permitir retiros.
+- Se arreglaron inconsistencias en la gestión del banco cuando múltiples fichas del mismo color eran comidas consecutivamente.
+
 ## [1.1.0] - Segundo Sprint
 
 ### Added
