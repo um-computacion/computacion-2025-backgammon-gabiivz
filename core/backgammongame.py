@@ -14,8 +14,12 @@ class BackgammonGame:
         self.__fichas_blancas__ = Checker("Blancas", "Blancas", self.__jugador_blancas__)
         self.__fichas_negras__ = Checker("Negras", "Negras", self.__jugador_negras__)
 
+
     def get_board(self):
         return self.__board__
+    
+    def get_ficha(self):
+        return self.__ficha
 
     def get_jugador_blancas(self):
         return self.__jugador_blancas__
@@ -37,6 +41,7 @@ class BackgammonGame:
             self.__turno__ = "Negras"
         else:
             self.__turno__ = "Blancas"
+
     def tirar_dados(self):   #faltaria lo de sumar los dados
         return self.__dado__.tirar
     
@@ -49,30 +54,21 @@ class BackgammonGame:
             movimiento.remove(valid)
         else:
             raise DadoNoDisponibleError("Ese valor del dado no está disponible.")
-    
-    def mover_ficha(self, origen, destino):
-        ficha = self.get_jugador_actual().get_color()
-        origen = int(origen)
-        destino = int(destino)
-        # Si hay fichas en el bar, deben moverse primero
-        if len(self.__board__.get_bar()) > 0:
-            if origen != 0:  # 0 = bar
-                raise FichaEnBarError("Debes mover primero las fichas del bar.")
-            if not self.__board__.mover_ficha_comida(destino, ficha):
-                raise PuntoOcupadoError("No puedes ingresar la ficha del bar en ese punto.")
-        if self.__dado__.movimientos == []:
-            raise DadosNoTiradosError("Debes tirar los dados antes de mover.")
-        if ficha == "Blancas":
-            movida = origen - destino
-        else:
-            movida = destino - origen
-        #if movida not in self.__dado__.movimientos:
-         #   raise MovimientoFueraDeRangoError("El movimiento está fuera del rango permitido por los dados.")
-        # Validar movimiento según dirección
-        self.__board__.movimiento_valido(origen, destino, ficha)
-        self.__board__.mover_ficha(origen, destino)
-        self.usar_dados(movida)
-
+        
+    def estado_actual(self):
+        """Devuelve una representación del estado actual del juego."""
+        estado = {
+            "turno": self.__turno__,
+            "jugador_blancas": str(self.__jugador_blancas__),
+            "jugador_negras": str(self.__jugador_negras__),
+            "fichas_blancas_en_bar": len(self.__board__.get_posicion(0)),  # posición 0 = bar blancas
+            "fichas_negras_en_bar": len(self.__board__.get_posicion(25)), # posición 25 = bar negras
+            "fichas_blancas_sacadas": len(self.__fichas_blancas__.get_fichas_sacadas_blancas()),
+            "fichas_negras_sacadas": len(self.__fichas_negras__.get_fichas_sacadas_negras()),
+            "dados": self.__dado__.movimientos,
+            "tablero": {i: self.__board__.get_posicion(i) for i in range(26)}
+        }
+        return estado
 
     def get_ganador(self):
         """Devuelve el nombre del jugador ganador si ya sacó todas sus fichas, sino None."""
