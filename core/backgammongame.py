@@ -69,7 +69,12 @@ class BackgammonGame:
             "tablero": {i: self.__board__.get_posicion(i) for i in range(26)}
         }
         return estado
-
+    
+    def turno_completo(self):
+        if self.__dado__.movimientos == [] and self.get_ganador() is None:
+            return True
+        return False
+     
     def get_ganador(self):
         """Devuelve el nombre del jugador ganador si ya sacó todas sus fichas, sino None."""
         blancas_sacadas = len(self.__fichas_blancas__.get_fichas_sacadas_blancas())

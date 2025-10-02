@@ -106,7 +106,24 @@ class TestBackgammonGame(unittest.TestCase):
         self.assertIn("Gabo", estado["jugador_negras"])  # jugador negras es Gabo
         self.assertIsInstance(estado["dados"], list)  # los dados son una lista
 
+    def test_turno_completo_true(self):
+        game = BackgammonGame("Gabi", "Gabo")
+        game.__dado__.movimientos = []
+    # No hay ganador, así que get_ganador debe devolver None por defecto
+        self.assertTrue(game.turno_completo())
 
+    def test_turno_completo_false_por_dados(self):
+        game = BackgammonGame("Gabi", "Gabo")
+        game.__dado__.movimientos = [3]
+        # No hay ganador, así que get_ganador debe devolver None por defecto
+        self.assertFalse(game.turno_completo())
+
+    #def test_turno_completo_false_por_ganador(self):
+     #   game = BackgammonGame("Gabi", "Gabo")
+      #  game.__dado__.movimientos = []
+    # Simula que hay un ganador agregando 15 fichas blancas sacadas
+       # game._BackgammonGame__fichas_blancas__._Checker__fichas_sacadas__ = ["Blancas"] * 15
+        #self.assertFalse(game.turno_completo())
 
 
 if __name__ == '__main__':
