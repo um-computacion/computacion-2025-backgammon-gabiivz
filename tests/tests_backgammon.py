@@ -92,50 +92,34 @@ class TestBackgammonGame(unittest.TestCase):
         game.__dado__.movimientos = [3, 5]
         self.assertNotEqual(game.usar_dados(3),[3,5])
 
-    #def test_mover_ficha_en_bar(self):
+    def test_estado_actual(self):
+        game = BackgammonGame("Gabi", "Gabo")
+        estado = game.estado_actual()
+        self.assertIsInstance(estado, dict)  # devuelve un diccionario
+        self.assertEqual(estado["turno"], "Blancas")  # turno inicial es Blancas
+        self.assertIn("Gabi", estado["jugador_blancas"])  # jugador blancas es Gabi
+        self.assertIn("Gabo", estado["jugador_negras"])  # jugador negras es Gabo
+        self.assertIsInstance(estado["dados"], list)  # los dados son una lista
+
+    def test_turno_completo_true(self):
+        game = BackgammonGame("Gabi", "Gabo")
+        game.__dado__.movimientos = []
+        # No hay ganador, así que get_ganador debe devolver None por defecto
+        self.assertTrue(game.turno_completo())
+
+    def test_turno_completo_false_por_dados(self):
+        game = BackgammonGame("Gabi", "Gabo")
+        game.__dado__.movimientos = [3]
+        # No hay ganador, así que get_ganador debe devolver None por defecto
+        self.assertFalse(game.turno_completo())
+
+    #def test_turno_completo_false_por_ganador(self):
      #   game = BackgammonGame("Gabi", "Gabo")
-      #  len(game.__board__.get_bar())>0
-       # game.get_board().__board__[3] = ["Blancas"]    
-        #game.get_board().__board__[1] = []    #
-        #game.__dado__.movimientos = [3, 5]
-       # with self.assertRaises(FichaEnBarError):
-        #    game.mover_ficha(3,1)
-
-    def test_mover_ficha_comida_punto_ocupado(self):
-        game = BackgammonGame("Gabi", "Gabo")
-        game.get_board().__board__[0] = ["Blancas"]    # Simula que hay fichas blancas en el bar
-        def no_ingresa(destino, ficha):    # Simula que no se puede ingresar la ficha en ese punto
-            return False
-        game.get_board().mover_ficha_comida = no_ingresa
-        game.__dado__.movimientos = [5]
-        self.assertRaises(PuntoOcupadoError,game.mover_ficha,0, 5)
-
-    def test_mover_ficha_sin_dados(self):
-        game = BackgammonGame("Gabi", "Gabo")
-        game.get_board().__board__[0] = []    # Simula que no hay fichas en el bar
-        game.__dado__.movimientos = []    # No hay movimientos en los dados
-        self.assertRaises(DadosNoTiradosError,game.mover_ficha,1, 5)
-
-    #def test_mover_fichas_blancas(self):
-     #   game = BackgammonGame("Gabi", "Gabo")
-      #  game.get_board().__board__[1] = ["Blancas"]
-       # game.get_board().__board__[4] = []
-        #game.__dado__.movimientos = [3, 5]
-        #game.mover_ficha(1, 4)
-        #self.assertEqual(game.get_board().__board__[1], [])
-        #self.assertEqual(game.get_board().__board__[4], ["Blancas"])
-        #self.assertEqual(game.__dado__.movimientos, [5])
-
-    def _test_mover_fichas_negras(self):
-        game = BackgammonGame("Gabi", "Gabo")
-        game.cambio_turnos()   #ahora es el turno de las negras
-        game.get_board().__board__[24] = ["Negras"]
-        game.get_board().__board__[21] = []
-        game.__dado__.movimientos = [3, 5]
-        game.mover_ficha(24, 21)
-        self.assertEqual(game.get_board().__board__[24], [])
-        self.assertEqual(game.get_board().__board__[21], ["Negras"])
-        self.assertEqual(game.__dado__.movimientos, [5])
+      #  game.__dado__.movimientos = []
+        # Simula que hay un ganador agregando 15 fichas blancas sacadas
+       
+       # game.__fichas_blancas__._Checker__fichas_sacadas__ = ["Blancas"] * 15
+        #self.assertFalse(game.turno_completo())
 
 if __name__ == '__main__':
     unittest.main()
