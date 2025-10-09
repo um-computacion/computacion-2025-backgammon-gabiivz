@@ -54,6 +54,26 @@ class BackgammonGame:
             movimiento.remove(valid)
         else:
             raise DadoNoDisponibleError("Ese valor del dado no está disponible.")
+    
+    def mover_ficha(self, origen, destino):
+        ficha = self.get_jugador_actual().get_color()
+    # Verifica si hay fichas comidas en el bar
+        if self.__board__.ficha_negras_bar(ficha) or self.__board__.ficha_blancas_bar(ficha):
+            raise FichaEnBarError("No puedes mover fichas normales si tienes fichas comidas en la barra")
+    # Verifica que los dados hayan sido tirados
+        if self.__dado__.movimientos == []:
+            raise DadosNoTiradosError("Debes tirar los dados antes de mover.")
+    # Calcula la distancia del movimiento
+        movida = abs(destino - origen)
+    # Verifica que el movimiento esté en los dados
+        if movida not in self.__dado__.movimientos:
+            raise DadoNoDisponibleError("Ese valor del dado no está disponible.")
+    # Intenta mover la ficha usando Board
+        try:
+            self.__board__.mover_ficha(origen, destino, ficha)
+            self.__dado__.movimientos.remove(movida)
+        except ValueError as e:
+            raise MovimientoInvalidoError(str(e))
         
     def estado_actual(self):
         """Devuelve una representación del estado actual del juego."""
@@ -74,7 +94,7 @@ class BackgammonGame:
         if self.__dado__.movimientos == [] and self.get_ganador() is None:
             return True
         return False
-     
+    
     def get_ganador(self):
         """Devuelve el nombre del jugador ganador si ya sacó todas sus fichas, sino None."""
         blancas_sacadas = len(self.__fichas_blancas__.get_fichas_sacadas_blancas())
