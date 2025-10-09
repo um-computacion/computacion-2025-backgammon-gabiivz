@@ -73,17 +73,16 @@ class TestBackgammonGame(unittest.TestCase):
 
     def test_tirar_dados(self):
         game = BackgammonGame("Gabi", "Gabo")
-        resultado = game.tirar_dados()()
+        resultado = game.tirar_dados()  # Sin () extra
         self.assertIsInstance(resultado, tuple)
         self.assertEqual(len(resultado), 2)
         self.assertTrue(1 <= resultado[0] <= 6)
         self.assertTrue(1 <= resultado[1] <= 6)
 
     def test_get_dados(self):
-        """Test corregido: get_dados() retorna una lista, no una función"""
         game = BackgammonGame("Gabi", "Gabo")
-        game.tirar_dados()()  # Tirar los dados primero
-        movimientos = game.get_dados()  # Sin el segundo ()
+        game.tirar_dados()  # Sin () extra
+        movimientos = game.get_dados()
         self.assertIsInstance(movimientos, list)
         self.assertIn(len(movimientos), [2, 4])
 

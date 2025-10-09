@@ -276,3 +276,13 @@ Código autodocumentado
 Objetivo:
 Código profesional con excepciones semánticas, sin duplicación, fácil de testear y mantener.
 
+Prompt: Mejoras y Conflictos en Backgammon CLI
+Estoy desarrollando un juego de Backgammon en Python y quiero mejorar mi CLI para que sea más clara y completa, pero sin complicarla.
+Quiero que meguies para agregar que en cada turno se muestre el estado del juego: movimientos disponibles, fichas en el bar, fichas sacadas y el tablero.
+Además, tuve problemas de conflicto de merge con archivos como .coverage, coverage.xml y __pycache__/*.pyc después de hacer pull y checkout.
+Necesito una explicación breve de cómo resolver estos conflictos y dejar todo como mi versión local, sin perder los archivos de reporte que pide la entrega.
+
+Inspiración:
+Usá como referencia el formato y claridad del archivo desarrollo.md que te adjunté.
+Herramienta: Chat-GPT
+
