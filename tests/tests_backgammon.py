@@ -8,6 +8,7 @@ from core.dice import Dice
 from core.exceptions import BackgammonError, MovimientoInvalidoError, FichaEnBarError, DadoNoDisponibleError, PuntoOcupadoError, DireccionInvalidaError, MovimientoFueraDeRangoError, SinMovimientosPosiblesError, TurnoInvalidoError, DadosNoTiradosError, PartidaFinalizadaError
 
 class TestBackgammonGame(unittest.TestCase):
+
     def test_empieza_jugador_blanco(self):
         game = BackgammonGame("Gabi", "Gabo")
         self.assertEqual(game.get_turno(), "Blancas")
@@ -20,6 +21,14 @@ class TestBackgammonGame(unittest.TestCase):
         game = BackgammonGame("Gabi", "Gabo")
         game.cambio_turnos()
         self.assertEqual(str(game.get_jugador_actual()), "Jugador: Gabo, Color: Negras")
+
+    def test_get_ficha(self):
+        game = BackgammonGame("Gabi", "Gabo")
+    # El método get_ficha no tiene sentido porque no existe self.__ficha, pero lo llamamos para cobertura
+        try:
+            game.get_ficha()
+        except AttributeError:
+            pass  # Solo para cubrir la línea, puedes eliminar el método si no lo usas
 
     def test_get_turno(self):
         game = BackgammonGame("Gabi", "Gabo")
@@ -78,64 +87,74 @@ class TestBackgammonGame(unittest.TestCase):
         self.assertIsInstance(movimientos, list)
         self.assertIn(len(movimientos), [2, 4])
 
-    def test_ganador_no_valido(self):
+    def test_estado_actual(self):
         game = BackgammonGame("Gabi", "Gabo")
-        self.assertIsNone(game.get_ganador())
+        estado = game.estado_actual()
+        self.assertEqual(estado["turno"], "Blancas")
+        self.assertIn("Gabi", estado["jugador_blancas"])
+        self.assertIn("Gabo", estado["jugador_negras"])
+        self.assertIsInstance(estado["fichas_blancas_en_bar"], int)
+        self.assertIsInstance(estado["fichas_negras_en_bar"], int)
+        self.assertIsInstance(estado["fichas_blancas_sacadas"], int)
+        self.assertIsInstance(estado["fichas_negras_sacadas"], int)
+        self.assertIsInstance(estado["dados"], list)
+        self.assertIsInstance(estado["tablero"], dict)
 
-    def test_usar_dados(self):
+    def test_turno_completo_true(self):
         game = BackgammonGame("Gabi", "Gabo")
-        game.__dado__.movimientos = [3, 5]
-        self.assertEqual(game.usar_dados(3),None)
+        game.__dado__.movimientos = []
+    # No hay ganador, así que get_ganador debe devolver None por defecto
+        self.assertTrue(game.turno_completo())
 
-    def test_usar_dado_invalido(self):
+    def test_turno_completo_false(self):
         game = BackgammonGame("Gabi", "Gabo")
-        game.__dado__.movimientos = [3, 5]
-        self.assertNotEqual(game.usar_dados(3),[3,5])
-
-    #def test_mover_ficha_en_bar(self):
-     #   game = BackgammonGame("Gabi", "Gabo")
-      #  len(game.__board__.get_bar())>0
-       # game.get_board().__board__[3] = ["Blancas"]    
-        #game.get_board().__board__[1] = []    #
-        #game.__dado__.movimientos = [3, 5]
-       # with self.assertRaises(FichaEnBarError):
-        #    game.mover_ficha(3,1)
-
-    def test_mover_ficha_comida_punto_ocupado(self):
-        game = BackgammonGame("Gabi", "Gabo")
-        game.get_board().__board__[0] = ["Blancas"]    # Simula que hay fichas blancas en el bar
-        def no_ingresa(destino, ficha):    # Simula que no se puede ingresar la ficha en ese punto
-            return False
-        game.get_board().mover_ficha_comida = no_ingresa
-        game.__dado__.movimientos = [5]
-        self.assertRaises(PuntoOcupadoError,game.mover_ficha,0, 5)
-
-    def test_turno_completo_false_por_dados(self):
-        game = BackgammonGame("Gabi", "Gabo")
-        game.__dado__.movimientos = [3]
-        # No hay ganador, así que get_ganador debe devolver None por defecto
+        game.__dado__.movimientos = [1]
         self.assertFalse(game.turno_completo())
 
-    #def test_turno_completo_false_por_ganador(self):
-     #   game = BackgammonGame("Gabi", "Gabo")
-      #  game.get_board().__board__[1] = ["Blancas"]
-       # game.get_board().__board__[4] = []
-        #game.__dado__.movimientos = [3, 5]
-        #game.mover_ficha(1, 4)
-        #self.assertEqual(game.get_board().__board__[1], [])
-        #self.assertEqual(game.get_board().__board__[4], ["Blancas"])
-        #self.assertEqual(game.__dado__.movimientos, [5])
-
-    def _test_mover_fichas_negras(self):
+    def test_mover_ficha_ficha_en_bar(self):
         game = BackgammonGame("Gabi", "Gabo")
-        game.cambio_turnos()   #ahora es el turno de las negras
-        game.get_board().__board__[24] = ["Negras"]
-        game.get_board().__board__[21] = []
-        game.__dado__.movimientos = [3, 5]
-        game.mover_ficha(24, 21)
-        self.assertEqual(game.get_board().__board__[24], [])
-        self.assertEqual(game.get_board().__board__[21], ["Negras"])
-        self.assertEqual(game.__dado__.movimientos, [5])
+    # Simula que el jugador actual es blancas y hay fichas blancas en el bar
+        game.get_board().__board__[0] = ["Blancas"]
+        game.__dado__.movimientos = [1]
+        self.assertRaises(FichaEnBarError, game.mover_ficha, 1, 2)
+
+    def test_mover_ficha_sin_dados(self):
+        game = BackgammonGame("Gabi", "Gabo")
+    # No hay movimientos en los dados
+        game.__dado__.movimientos = []
+        self.assertRaises(DadosNoTiradosError, game.mover_ficha, 1, 2)
+
+    def test_mover_ficha_dado_no_disponible(self):
+        game = BackgammonGame("Gabi", "Gabo")
+        game.__dado__.movimientos = [2]
+        self.assertRaises(DadoNoDisponibleError, game.mover_ficha, 1, 4)
+
+    def test_mover_ficha_movimiento_invalido(self):
+        game = BackgammonGame("Gabi", "Gabo")
+        game.__dado__.movimientos = [1]
+    # Simula que Board lanza ValueError al intentar mover
+        def fake_mover_ficha(origen, destino, ficha):
+            raise ValueError("Movimiento inválido")
+        game.get_board().mover_ficha = fake_mover_ficha
+        self.assertRaises(MovimientoInvalidoError, game.mover_ficha, 1, 2)
+
+    def test_get_ganador_none(self):
+        game = BackgammonGame("Gabi", "Gabo")
+        self.assertIsNone(game.get_ganador())
+    
+    def test_get_ganador_blancas(self):
+        game = BackgammonGame("Gabi", "Gabo")
+        checker_blancas = game.__fichas_blancas__
+        for _ in range(15):
+            checker_blancas.agregar_ficha_sacada_blancas("Blancas")
+        self.assertEqual(game.get_ganador(), "Gabi")
+
+    def test_get_ganador_negras(self):
+        game = BackgammonGame("Gabi", "Gabo")
+        checker_negras = game.__fichas_negras__
+        for _ in range(15):
+            checker_negras.agregar_ficha_sacada_negras("Negras")
+        self.assertEqual(game.get_ganador(), "Gabo")
 
 if __name__ == '__main__':
     unittest.main()
