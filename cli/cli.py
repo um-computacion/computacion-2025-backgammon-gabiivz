@@ -4,7 +4,7 @@ from core.exceptions import (
     FichaEnBarError, DadoNoDisponibleError, DadosNoTiradosError,
     SinMovimientosPosiblesError, DireccionInvalidaError, TurnoInvalidoError
 )
-
+"""ejecutar con esto:python -m cli.cli"""
 class BackgammonCLI:
     def __init__(self):
         nombre_blancas = input("Nombre jugador blancas: ")
@@ -26,6 +26,16 @@ class BackgammonCLI:
         print(self.board)
 
         while not self.game.get_ganador():
+            estado = self.game.estado_actual()
+            print("\n--- Estado actual ---")
+            print(f"Movimientos disponibles: {self.game.get_dados()}")
+            print(f"Fichas blancas en el bar: {estado['fichas_blancas_en_bar']}")
+            print(f"Fichas negras en el bar: {estado['fichas_negras_en_bar']}")
+            print(f"Fichas blancas sacadas: {estado['fichas_blancas_sacadas']}")
+            print(f"Fichas negras sacadas: {estado['fichas_negras_sacadas']}")
+            print("Tablero:")
+            for pos, fichas in estado["tablero"].items():
+                print(f"{pos}: {fichas}")
             print(f"\nTurno de: {self.game.get_jugador_actual().get_nombre()}")
             dados = self.game.tirar_dados()
             print(f"Dados tirados: {dados}")
@@ -60,7 +70,7 @@ class BackgammonCLI:
 
         ganador = self.game.get_ganador()
         if ganador:
-            print(f"\n¡Ganó {ganador}!")
+            print(f"\nGanó {ganador}!")
 
 if __name__ == "__main__":
     cli = BackgammonCLI()

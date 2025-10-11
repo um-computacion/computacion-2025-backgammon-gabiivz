@@ -42,8 +42,8 @@ class BackgammonGame:
         else:
             self.__turno__ = "Blancas"
 
-    def tirar_dados(self):   #faltaria lo de sumar los dados
-        return self.__dado__.tirar
+    def tirar_dados(self):
+        return self.__dado__.tirar()
     
     def get_dados(self):
         return self.__dado__.movimientos
