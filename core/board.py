@@ -85,8 +85,6 @@ class Board:
             return True
         if len(self.__board__[destino]) >= 2:
             raise ValueError("No se puede mover la ficha a esa posicion porque hay mas de una ficha del color contrario")
-
-
         
     def mover_ficha_comida(self, destino, ficha):   #mueve la ficha comida a una posicion vacia o con fichas del mismo color
         if self.__board__[destino] == [] or self.__board__[destino] == [ficha]:
