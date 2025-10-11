@@ -22,8 +22,6 @@ class BackgammonCLI:
         print("Los dados determinan cuántas casillas puedes mover.")
         print("Si caes en una casilla ocupada por el oponente, debes 'comer' su ficha.")
         print("¡Buena suerte!")
-        print("Tablero inicial:")
-        print(self.board)
 
         while not self.game.get_ganador():
             estado = self.game.estado_actual()
@@ -37,8 +35,15 @@ class BackgammonCLI:
             for pos, fichas in estado["tablero"].items():
                 print(f"{pos}: {fichas}")
             print(f"\nTurno de: {self.game.get_jugador_actual().get_nombre()}")
-            dados = self.game.tirar_dados()
-            print(f"Dados tirados: {dados}")
+            if not self.game.get_dados():
+                tirar = input("¿Querés tirar los dados? (si/no): ")
+                if tirar.lower() == "si":
+                    dados = self.game.tirar_dados()
+                    print(f"Dados tirados: {dados}")
+                else:
+                    print("Debés tirar los dados para jugar.")
+                    continue
+            print(f"Movimientos disponibles: {self.game.get_dados()}")
             print("Opciones:")
             print("1: Mover ficha")
             print("2: Rendirse")
@@ -52,6 +57,10 @@ class BackgammonCLI:
                     destino = int(input("Hasta: "))
                     self.game.mover_ficha(origen, destino)
                     print(f"Ficha movida de {origen} a {destino}")
+                    print(f"Movimientos restantes: {self.game.get_dados()}")  
+            # SOLO CAMBIAR TURNO SI YA NO QUEDAN MOVIMIENTOS
+                    if not self.game.get_dados():
+                        self.game.cambio_turnos()
                 except (FichaEnBarError, DadoNoDisponibleError, DadosNoTiradosError, MovimientoInvalidoError, SinMovimientosPosiblesError) as e:
                     print(f"Error: {e}")
                     self.game.cambio_turnos()
