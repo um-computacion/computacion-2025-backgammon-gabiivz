@@ -26,11 +26,6 @@ class BackgammonCLI:
         while not self.game.get_ganador():
             estado = self.game.estado_actual()
             print("\n--- Estado actual ---")
-            print(f"Movimientos disponibles: {self.game.get_dados()}")
-            print(f"Fichas blancas en el bar: {estado['fichas_blancas_en_bar']}")
-            print(f"Fichas negras en el bar: {estado['fichas_negras_en_bar']}")
-            print(f"Fichas blancas sacadas: {estado['fichas_blancas_sacadas']}")
-            print(f"Fichas negras sacadas: {estado['fichas_negras_sacadas']}")
             print("Tablero:")
             for pos, fichas in estado["tablero"].items():
                 print(f"{pos}: {fichas}")
@@ -46,8 +41,9 @@ class BackgammonCLI:
             print(f"Movimientos disponibles: {self.game.get_dados()}")
             print("Opciones:")
             print("1: Mover ficha")
-            print("2: Rendirse")
-            print("3: Finalizar juego")
+            print("2: Ver estado del juego")
+            print("3: Rendirse")
+            print("4: Finalizar juego")
             opcion = input("Opción: ")
 
             if opcion == "1":
@@ -66,9 +62,12 @@ class BackgammonCLI:
                     self.game.cambio_turnos()
                     continue
             elif opcion == "2":
+                print("Estado actual del juego:")
+                print(self.game.estado_actual())
+            elif opcion == "3":
                 print("¡Te rendiste! Fin del juego.")
                 break
-            elif opcion == "3":
+            elif opcion == "4":
                 print(f"Juego finalizado por {self.game.get_jugador_actual().get_nombre()}.")
                 break
             else:

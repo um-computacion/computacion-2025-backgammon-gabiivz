@@ -75,6 +75,38 @@ class BackgammonGame:
         except ValueError as e:
             raise MovimientoInvalidoError(str(e))
         
+    def comer_ficha(self, origen, destino):
+        ficha = self.get_jugador_actual().get_color()
+        movida = abs(destino - origen)
+        if movida not in self.__dado__.movimientos:
+            raise DadoNoDisponibleError("Ese valor del dado no está disponible.")
+        fichas_destino = self.__board__.get_posicion(destino)
+        if len(fichas_destino) == 1 and fichas_destino[0] != ficha:
+            self.__board__.comer_ficha(destino, origen, ficha, fichas_destino[0])
+            self.__dado__.movimientos.remove(movida)
+        else:
+            raise MovimientoInvalidoError("No se puede comer ficha en esa posición")
+    
+    def mover_ficha_desde_bar(self, destino):
+        ficha = self.get_jugador_actual().get_color()
+        movida = destino if ficha == "Blancas" else 25 - destino
+        if movida not in self.__dado__.movimientos:
+            raise DadoNoDisponibleError("Ese valor del dado no está disponible.")
+        if self.__board__.mover_ficha_comida(destino, ficha):
+            self.__dado__.movimientos.remove(movida)
+        else:
+            raise MovimientoInvalidoError("No se puede mover la ficha comida a esa posición")
+        
+    def sacar_ficha(self, origen):
+        ficha = self.get_jugador_actual().get_color()
+        movida = 25 - origen if ficha == "Blancas" else origen
+        if movida not in self.__dado__.movimientos:
+            raise DadoNoDisponibleError("Ese valor del dado no está disponible.")
+        if self.__board__.sacar_ficha(origen, ficha):
+            self.__dado__.movimientos.remove(movida)
+        else:
+            raise MovimientoInvalidoError("No se puede sacar la ficha de esa posición")
+        
     def estado_actual(self):
         """Devuelve una representación del estado actual del juego."""
         estado = {

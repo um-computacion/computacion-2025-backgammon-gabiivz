@@ -1,3 +1,4 @@
+from core.exceptions import BackgammonError, MovimientoInvalidoError, FichaEnBarError, DadoNoDisponibleError, PuntoOcupadoError, DireccionInvalidaError, MovimientoFueraDeRangoError, SinMovimientosPosiblesError, TurnoInvalidoError, DadosNoTiradosError, PartidaFinalizadaError
 class Board:
     
     def __init__(self):
@@ -104,7 +105,7 @@ class Board:
             self.__board__[25] = self.__board__[25] + [ficha]
             return True
         else:
-            raise ValueError("No se puede sacar la ficha de esa posicion")
+            raise MovimientoInvalidoError("No se puede sacar la ficha de esa posicion")
 
 
 

@@ -1,5 +1,7 @@
 import unittest
 from core.board import Board
+from core.exceptions import BackgammonError, MovimientoInvalidoError, FichaEnBarError, DadoNoDisponibleError, PuntoOcupadoError, DireccionInvalidaError, MovimientoFueraDeRangoError, SinMovimientosPosiblesError, TurnoInvalidoError, DadosNoTiradosError, PartidaFinalizadaError
+
 
 class TestBoard(unittest.TestCase):
 
@@ -235,14 +237,14 @@ class TestBoard(unittest.TestCase):
     def test_sacar_ficha_blanca_invalida(self):
         board = Board()
         board.__board__[18] = ['Blancas'] * 3
-        self.assertRaises(ValueError, board.sacar_ficha,18, 'Blancas')
+        self.assertRaises(MovimientoInvalidoError, board.sacar_ficha,18, 'Blancas')
         self.assertEqual(board.get_posicion(18), ['Blancas'] * 3)
         self.assertEqual(board.get_salida(), [])
 
     def test_sacar_ficha_negra_invalida(self):
         board = Board()
         board.__board__[7] = ['Negras'] * 3
-        self.assertRaises(ValueError,board.sacar_ficha,7, 'Negras')
+        self.assertRaises(MovimientoInvalidoError,board.sacar_ficha,7, 'Negras')
         self.assertEqual(board.get_posicion(7), ['Negras'] * 3)
         self.assertEqual(board.get_salida(), [])
 
