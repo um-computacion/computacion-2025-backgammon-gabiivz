@@ -1,0 +1,27 @@
+ECHO is on.
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# VSCode
+.vscode/
+
+# Coverage
+.coverage
+htmlcov/
+.coveragerc
+
+# Test cache
+.pytest_cache/
+
+# Entornos virtuales
+venv/
+env/
+
+# Archivos temporales
+*.log
+*.tmp
+
+# Archivos de configuración de herramientas
+.pylintrc

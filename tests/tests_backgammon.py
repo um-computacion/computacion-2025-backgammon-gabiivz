@@ -155,5 +155,109 @@ class TestBackgammonGame(unittest.TestCase):
             checker_negras.agregar_ficha_sacada_negras("Negras")
         self.assertEqual(game.get_ganador(), "Gabo")
 
+    def test_comer_ficha(self):
+        game = BackgammonGame("Gabi", "Gabo")
+        game.__dado__.movimientos = [1]
+        # Simula que hay una ficha negra en destino y es turno de blancas
+        game.__turno__ = "Blancas"
+        game.get_board().__board__[2] = ["Blancas"]
+        game.get_board().__board__[1] = ["Negras"]
+        # Comer ficha negra en la posición 1 desde 2
+        game.comer_ficha(2, 1)
+        self.assertEqual(game.get_board().get_posicion(1)[-1], "Blancas")
+        self.assertEqual(game.get_board().get_posicion(2), [])
+
+    def test_comer_ficha_error(self):
+        game = BackgammonGame("Gabi", "Gabo")
+        game.__dado__.movimientos = [1]
+        game.__turno__ = "Blancas"
+        game.get_board().__board__[1] = ["Negras", "Negras"]
+        # No se puede comer si hay más de una ficha rival
+        with self.assertRaises(MovimientoInvalidoError):
+            game.comer_ficha(2, 1)
+
+    def test_mover_ficha_desde_bar(self):
+        game = BackgammonGame("Gabi", "Gabo")
+        game.__dado__.movimientos = [1]
+        game.__turno__ = "Blancas"
+        game.get_board().__board__[0] = ["Blancas"]
+        game.get_board().__board__[1] = []  # Aseguramos que esté vacío
+        game.mover_ficha_desde_bar(1)
+        self.assertEqual(game.get_board().get_posicion(1)[-1], "Blancas")
+        self.assertEqual(game.get_board().get_posicion(0), [])
+
+    def test_mover_ficha_desde_bar_error(self):
+        game = BackgammonGame("Gabi", "Gabo")
+        game.__dado__.movimientos = [1]
+        game.__turno__ = "Blancas"
+        # No hay ficha en el bar
+        with self.assertRaises(MovimientoInvalidoError):
+            game.mover_ficha_desde_bar(1)
+
+    def test_sacar_ficha(self):
+        game = BackgammonGame("Gabi", "Gabo")
+        game.__dado__.movimientos = [1]  # Dado correcto para sacar desde 24
+        game.__turno__ = "Blancas"
+        game.get_board().__board__[24] = ["Blancas"]
+        game.sacar_ficha(24)
+        self.assertEqual(game.get_board().get_posicion(24), [])
+
+    def test_sacar_ficha_error(self):
+        game = BackgammonGame("Gabi", "Gabo")
+        game.__dado__.movimientos = [1]
+        game.__turno__ = "Blancas"
+    # No hay ficha en la posición 24
+        with self.assertRaises(MovimientoInvalidoError):
+            game.sacar_ficha(24)
+
+    #mejorando coverage
+    def test_get_ficha_attribute_error(self):
+        game = BackgammonGame("Gabi", "Gabo")
+    # El método get_ficha no existe correctamente, debe lanzar AttributeError
+        with self.assertRaises(AttributeError):
+            game.get_ficha()
+
+    def test_usar_dados_no_disponible(self):
+        game = BackgammonGame("Gabi", "Gabo")
+        game.__dado__.movimientos = [2]
+    # Intentar usar un dado que no está disponible
+        with self.assertRaises(DadoNoDisponibleError):
+            game.usar_dados(1)
+
+    def test_comer_ficha_dado_no_disponible(self):
+        game = BackgammonGame("Gabi", "Gabo")
+        game.__dado__.movimientos = [2]
+        game.__turno__ = "Blancas"
+        game.get_board().__board__[1] = ["Negras"]
+    # Intentar comer con un dado no disponible
+        with self.assertRaises(DadoNoDisponibleError):
+            game.comer_ficha(2, 1)
+
+    def test_mover_ficha_desde_bar_dado_no_disponible(self):
+        game = BackgammonGame("Gabi", "Gabo")
+        game.__dado__.movimientos = [2]
+        game.__turno__ = "Blancas"
+        game.get_board().__board__[0] = ["Blancas"]
+    # Intentar mover ficha desde bar con dado no disponible
+        with self.assertRaises(DadoNoDisponibleError):
+            game.mover_ficha_desde_bar(1)
+
+    def test_sacar_ficha_dado_no_disponible(self):
+        game = BackgammonGame("Gabi", "Gabo")
+        game.__dado__.movimientos = [2]
+        game.__turno__ = "Blancas"
+        game.get_board().__board__[24] = ["Blancas"]
+    # Intentar sacar ficha con dado no disponible
+        with self.assertRaises(DadoNoDisponibleError):
+            game.sacar_ficha(24)
+
+    def test_sacar_ficha_no_se_puede(self):
+        game = BackgammonGame("Gabi", "Gabo")
+        game.__dado__.movimientos = [1]
+        game.__turno__ = "Blancas"
+    # No hay ficha en la posición 24
+        with self.assertRaises(MovimientoInvalidoError):
+            game.sacar_ficha(24)
+            
 if __name__ == '__main__':
     unittest.main()
