@@ -1,7 +1,6 @@
 from core.board import Board
 from core.dice import Dice
 from core.player import Player
-from core.checker import Checker
 from core.exceptions import BackgammonError, MovimientoInvalidoError, FichaEnBarError, DadoNoDisponibleError, PuntoOcupadoError, DireccionInvalidaError, MovimientoFueraDeRangoError, SinMovimientosPosiblesError, TurnoInvalidoError, DadosNoTiradosError, PartidaFinalizadaError
 
 class BackgammonGame:
@@ -11,16 +10,13 @@ class BackgammonGame:
         self.__dado__ = Dice()
         self.__jugador_blancas__ = Player(nombre_blancas, "Blancas")
         self.__jugador_negras__ = Player(nombre_negras, "Negras")
-        self.__fichas_blancas__ = Checker("Blancas", "Blancas", self.__jugador_blancas__)
-        self.__fichas_negras__ = Checker("Negras", "Negras", self.__jugador_negras__)
+        self.__fichas_sacadas_blancas__ = []
+        self.__fichas_sacadas_negras__ = []
 
 
     def get_board(self):
         return self.__board__
     
-    def get_ficha(self):
-        return self.__ficha
-
     def get_jugador_blancas(self):
         return self.__jugador_blancas__
     
@@ -46,66 +42,82 @@ class BackgammonGame:
         return self.__dado__.tirar()
     
     def get_dados(self):
-        return self.__dado__.movimientos
+        return self.__dado__.__movimientos__
     
     def usar_dados(self, valid):
-        movimiento = self.__dado__.movimientos
+        movimiento = self.__dado__.__movimientos__
         if valid in movimiento:
             movimiento.remove(valid)
         else:
             raise DadoNoDisponibleError("Ese valor del dado no está disponible.")
-    
+        
     def mover_ficha(self, origen, destino):
-        ficha = self.get_jugador_actual().get_color()
-    # Verifica si hay fichas comidas en el bar
-        if self.__board__.ficha_negras_bar(ficha) or self.__board__.ficha_blancas_bar(ficha):
-            raise FichaEnBarError("No puedes mover fichas normales si tienes fichas comidas en la barra")
-    # Verifica que los dados hayan sido tirados
-        if self.__dado__.movimientos == []:
-            raise DadosNoTiradosError("Debes tirar los dados antes de mover.")
-    # Calcula la distancia del movimiento
-        movida = abs(destino - origen)
-    # Verifica que el movimiento esté en los dados
-        if movida not in self.__dado__.movimientos:
-            raise DadoNoDisponibleError("Ese valor del dado no está disponible.")
-    # Intenta mover la ficha usando Board
-        try:
+        ficha = self.get_turno()
+        origen = int(origen)
+        destino = int(destino)
+        mov = 0 
+        if self.get_dados() == []:
+            raise DadosNoTiradosError("No has tirado los dados o no tienes movimientos disponibles.")
+        #BAR
+        if origen == 0 and ficha == "Negras" or origen == 25 and ficha == "Blancas":
+            if ficha == "Blancas":
+                mov = 25 - destino 
+            else: 
+                mov = destino 
+            if mov not in self.get_dados():
+                 raise DadoNoDisponibleError("El movimiento no coincide con los dados disponibles.")
+        if ficha == "Negras" and len(self.__board__.get_bar_negras()) > 0 and origen != 0:
+            raise FichaEnBarError("Tienes fichas en el bar, tenés que moverlas primero.")
+
+        if ficha == "Blancas" and len(self.__board__.get_bar_blancas()) > 0 and origen != 25:
+            raise FichaEnBarError("Tienes fichas en el bar, tenés que moverlas primero.")
+        #SACAR FICHAS
+        if destino == 26:
+            if ficha == "Blancas":
+                mov = origen
+            else: # Negras
+                mov = 25 - origen
+            try:
+                self.__board__.sacar_ficha_valido(ficha)
+            except MovimientoInvalidoError:
+                 raise MovimientoInvalidoError("No puedes sacar fichas hasta que todas estén en tu casa.")
+            dados_disponibles = self.get_dados()
+            if mov in dados_disponibles:
+                self.__board__.sacar_ficha(origen, ficha) 
+                self.usar_dados(mov)
+                if ficha == "Blancas":
+                    self.__fichas_sacadas_blancas__.append(ficha)
+                else:
+                    self.__fichas_sacadas_negras__.append(ficha)
+                return
+            else:
+                mayores_disponibles = [dado for dado in dados_disponibles if dado > mov]
+                if mayores_disponibles:
+                    mayor_dado = min(mayores_disponibles)
+                    self.__board__.sacar_ficha(origen, ficha)
+                    self.usar_dados(mayor_dado)
+                    if ficha == "Blancas":
+                        self.__fichas_sacadas_blancas__.append(ficha)
+                    else:
+                        self.__fichas_sacadas_negras__.append(ficha)
+                    return
+            raise DadoNoDisponibleError("Movimiento para sacar ficha no válido con los dados actuales.")
+        #MOVIMIENTO NORMAL
+        if ficha == "Blancas":
+            mov = abs(origen - destino)
+        else: # Negras
+            mov = abs(destino - origen)
+        if mov not in self.get_dados():
+            raise DadoNoDisponibleError("El movimiento no coincide con los dados disponibles.")
+        if origen != 0 and origen != 25:
+            self.__board__.movimiento_valido(origen, destino, ficha)
+        #COMER FICHA
+        if self.__board__.get_posicion(destino) != [] and self.__board__.get_posicion(destino)[0] != ficha:
+            self.__board__.comer_ficha(destino, origen, ficha, self.__board__.get_posicion(destino)[0])
+        else:
             self.__board__.mover_ficha(origen, destino, ficha)
-            self.__dado__.movimientos.remove(movida)
-        except ValueError as e:
-            raise MovimientoInvalidoError(str(e))
+        self.usar_dados(mov)
         
-    def comer_ficha(self, origen, destino):
-        ficha = self.get_jugador_actual().get_color()
-        movida = abs(destino - origen)
-        if movida not in self.__dado__.movimientos:
-            raise DadoNoDisponibleError("Ese valor del dado no está disponible.")
-        fichas_destino = self.__board__.get_posicion(destino)
-        if len(fichas_destino) == 1 and fichas_destino[0] != ficha:
-            self.__board__.comer_ficha(destino, origen, ficha, fichas_destino[0])
-            self.__dado__.movimientos.remove(movida)
-        else:
-            raise MovimientoInvalidoError("No se puede comer ficha en esa posición")
-    
-    def mover_ficha_desde_bar(self, destino):
-        ficha = self.get_jugador_actual().get_color()
-        movida = destino if ficha == "Blancas" else 25 - destino
-        if movida not in self.__dado__.movimientos:
-            raise DadoNoDisponibleError("Ese valor del dado no está disponible.")
-        if self.__board__.mover_ficha_comida(destino, ficha):
-            self.__dado__.movimientos.remove(movida)
-        else:
-            raise MovimientoInvalidoError("No se puede mover la ficha comida a esa posición")
-        
-    def sacar_ficha(self, origen):
-        ficha = self.get_jugador_actual().get_color()
-        movida = 25 - origen if ficha == "Blancas" else origen
-        if movida not in self.__dado__.movimientos:
-            raise DadoNoDisponibleError("Ese valor del dado no está disponible.")
-        if self.__board__.sacar_ficha(origen, ficha):
-            self.__dado__.movimientos.remove(movida)
-        else:
-            raise MovimientoInvalidoError("No se puede sacar la ficha de esa posición")
         
     def estado_actual(self):
         """Devuelve una representación del estado actual del juego."""
@@ -113,40 +125,41 @@ class BackgammonGame:
             "turno": self.__turno__,
             "jugador_blancas": str(self.__jugador_blancas__),
             "jugador_negras": str(self.__jugador_negras__),
-            "fichas_blancas_en_bar": len(self.__board__.get_posicion(0)),  # posición 0 = bar blancas
-            "fichas_negras_en_bar": len(self.__board__.get_posicion(25)), # posición 25 = bar negras
-            "fichas_blancas_sacadas": len(self.__fichas_blancas__.get_fichas_sacadas_blancas()),
-            "fichas_negras_sacadas": len(self.__fichas_negras__.get_fichas_sacadas_negras()),
-            "dados": self.__dado__.movimientos,
-            "tablero": {i: self.__board__.get_posicion(i) for i in range(26)}
+            "fichas_blancas_en_bar": len(self.__board__.get_posicion(25)), # Blancas = 25
+            "fichas_negras_en_bar": len(self.__board__.get_posicion(0)),  # Negras = 0
+            "fichas_blancas_sacadas": len(self.__fichas_sacadas_blancas__),
+            "fichas_negras_sacadas": len(self.__fichas_sacadas_negras__),
+            "dados": self.__dado__.__movimientos__,
+            "tablero": {i: self.__board__.get_posicion(i) for i in range(1, 25)}
         }
         return estado
     
     def turno_completo(self):
-        if self.__dado__.movimientos == [] and self.get_ganador() is None:
+        if self.__dado__.__movimientos__ == [] and self.get_ganador() is None:
             return True
         return False
     
     def get_ganador(self):
         """Devuelve el nombre del jugador ganador si ya sacó todas sus fichas, sino None."""
-        blancas_sacadas = len(self.__fichas_blancas__.get_fichas_sacadas_blancas())
-        negras_sacadas = len(self.__fichas_negras__.get_fichas_sacadas_negras())
+        blancas_sacadas = len(self.__fichas_sacadas_blancas__)
+        negras_sacadas = len(self.__fichas_sacadas_negras__)
         if blancas_sacadas == 15:
             return self.__jugador_blancas__.get_nombre()
         if negras_sacadas == 15:
             return self.__jugador_negras__.get_nombre()
         return None
-
-    
-
-
-
     
     
 
-    
-
-        
 
 
-    
+
+
+
+
+
+
+
+
+
+

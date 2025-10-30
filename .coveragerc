@@ -7,6 +7,8 @@ omit =
     core/exceptions.py
     */venv/*
     */__pycache__/*
+    cli\__init__.py
+    core\__init__.py
 
 [report]
 show_missing = True

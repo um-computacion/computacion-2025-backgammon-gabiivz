@@ -286,3 +286,50 @@ Inspiración:
 Usá como referencia el formato y claridad del archivo desarrollo.md que te adjunté.
 Herramienta: Chat-GPT
 
+
+Prompt: Refactorización de Clases (Checker vs Game)
+Contexto
+El usuario ha implementado una clase Checker que no representa una ficha individual, sino que actúa como un "administrador de fichas sacadas" para cada jugador.
+
+Python
+
+# core/backgammongame.py
+class BackgammonGame:
+    def __init__(self, ...):
+        # ...
+        self.__fichas_blancas__ = Checker("Blancas", ...)
+        self.__fichas_negras__ = Checker("Negras", ...)
+    
+    def get_ganador(self):
+        blancas_sacadas = len(self.__fichas_blancas__.get_fichas_sacadas_blancas())
+        #...
+El enunciado del proyecto (Punto 5.1) especifica: Checker → Representa cada ficha. El diseño actual del usuario es confuso.
+
+Solicitud del usuario
+"creo que quiero mover fichas sacadas a game tiene sentido?"  "hace falta eliminar checker?"
+
+Problema identificado
+El diseño de la clase Checker del usuario no se alinea con la responsabilidad definida en el enunciado, creando una clase confusa que solo se usa para mantener un contador. La lógica de "fichas sacadas" es un estado del juego (BackgammonGame), no de una entidad Checker separada.
+
+Tarea
+Validar la intuición del usuario ("Sí, tiene muchísimo sentido").
+
+Explicar por qué es una buena idea (centraliza el estado, limpia el diseño).
+
+Proporcionar el código refactorizado para BackgammonGame.py:
+
+Modificar __init__ para usar self.__fichas_sacadas_blancas__ = [].
+
+Modificar mover_ficha para usar .append() en esa lista.
+
+Modificar get_ganador y estado_actual para usar len() de esa lista.
+
+Aconsejar firmemente (en rol de "profe") la eliminación de los archivos core/checker.py y tests/tests_checker.py por ser "código muerto" y mala práctica.
+
+Actualizar el archivo de tests tests_backgammongame.py para que refleje los cambios (ej. en test_get_ganador_blancas).
+
+Estilo de respuesta esperado
+Actuar como un guía/profesor que valida una buena idea de diseño.
+
+Ser claro sobre por qué la refactorización es correcta.
+

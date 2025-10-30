@@ -7,25 +7,38 @@ El formato sigue Keep a Changelog y el proyecto utiliza Semantic Versioning.
 ## [UNRELEASED]
 
 ### Added
-- Se agregaron tests unitarios para la clase BackgammonGame, cubriendo turnos, jugadores y métodos de dados.
-- Se implementaron tests para los métodos get_board, get_jugador_blancas, get_jugador_negras y cambio_turnos.
-- Se añadieron tests para la clase Dice usando patch para controlar los valores de los dados.
-- Se agregaron tests para la clase Player y Checker, verificando getters y representación en string.
-- Se ampliaron los tests en la clase Board para cubrir movimientos válidos, inválidos y casos de comer ficha.
-- Se agregaron tests para asegurar la cobertura de los métodos de distancia y validación de movimientos en Board.
 
 ### Changed
-- Se mejoró la estructura de los tests dividiéndolos en funciones pequeñas y específicas.
-- Se ajustaron los tests para acceder correctamente a los atributos privados de las clases.
-- Se actualizaron los tests de Dice para cubrir casos de dobles, valores distintos y errores en randint.
 
 ### Fixed
-- Se corrigieron errores en los tests que no accedían correctamente a los atributos privados.
-- Se solucionaron problemas de cobertura en los métodos de Board y Dice.
-- Se ajustaron los tests para contemplar correctamente los casos de excepción en movimientos inválidos.
 
 ### Removed
-- Se eliminaron tests redundantes y se consolidaron casos similares para simplificar la suite de pruebas.
+
+## [1.3.0] - Cuarto Sprint
+
+### Added
+- Se implementó una interfaz de línea de comandos (CLI) en `main.py` para permitir la interacción del usuario y jugar una partida completa.
+- Se completó la lógica de la clase `BackgammonGame`, integrando la gestión de turnos, el lanzamiento de dados, el movimiento de fichas y la detección del ganador.
+- Se añadió la lógica para manejar el ciclo de juego completo, desde el inicio hasta que se declara un ganador.
+- Se agregaron tests unitarios exhaustivos para `BackgammonGame`, cubriendo escenarios de juego complejos, movimientos desde el bar y el retiro de fichas.
+- Se implementaron tests para los métodos `get_board`, `get_jugador_blancas`, `get_jugador_negras` y `cambio_turnos`.
+- Se añadieron tests para la clase `Dice` usando `patch` para simular tiradas de dados específicas.
+- Se agregaron tests para la clase `Player`, verificando la correcta creación y obtención de sus atributos.
+
+### Changed
+- Se refactorizó la clase `BackgammonGame` para centralizar la lógica de las reglas del juego y simplificar la interacción con el `Board`.
+- Se modificó la clase `Board` para delegar las validaciones de movimientos complejos a `BackgammonGame`, enfocándose solo en el estado del tablero.
+- Se mejoró la legibilidad de todos los tests unitarios añadiendo docstrings descriptivos en español a cada función de prueba.
+- Se ajustaron los tests existentes para reflejar la nueva arquitectura y el acceso a los atributos de las clases.
+
+### Fixed
+- Se corrigió el acceso a atributos privados en los tests para asegurar que las pruebas sean robustas y no dependan de la implementación interna.
+- Se solucionaron problemas de cobertura de código en las clases `Board` y `Dice` mediante la adición de tests para casos borde.
+- Se ajustaron los tests de movimientos para contemplar correctamente el lanzamiento de excepciones personalizadas.
+
+### Removed
+- Se eliminó la clase `Checker`, ya que su funcionalidad fue absorbida y simplificada dentro de las clases `Board` y `BackgammonGame`.
+- Se eliminaron tests redundantes que probaban la misma funcionalidad, consolidándolos en pruebas más completas y específicas.
 
 ## [1.2.0] - Tercer Sprint
 
