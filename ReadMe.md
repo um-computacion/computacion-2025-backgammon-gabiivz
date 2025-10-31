@@ -1,5 +1,7 @@
 🎲 Backgammon
-Alumno: Gabriela Vaca Carrera: Ingeniería en Informática Ciclo lectivo: 2025
+Alumno: Gabriela Vaca 
+Carrera: Ingeniería en Informática 
+Ciclo lectivo: 2025
 
 📋 Descripción
 Este proyecto implementa una versión completa del juego Backgammon en Python, con soporte para juego por consola (CLI) y una interfaz gráfica (Pygame) desacoplada de la lógica.

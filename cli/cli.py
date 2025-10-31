@@ -1,18 +1,30 @@
 from core.backgammongame import BackgammonGame
 from core.exceptions import (
     BackgammonError, MovimientoFueraDeRangoError, MovimientoInvalidoError,
-    FichaEnBarError, DadoNoDisponibleError, DadosNoTiradosError,
-    SinMovimientosPosiblesError, DireccionInvalidaError, TurnoInvalidoError, PuntoOcupadoError
+    FichaEnBarError, DadoNoDisponibleError, DadosNoTiradosError, DireccionInvalidaError, PuntoOcupadoError
 )
 """ejecutar con esto:python -m cli.cli"""
 class BackgammonCLI:
     def __init__(self):
-        nombre_blancas = input("Nombre jugador blancas: ")
-        nombre_negras = input("Nombre jugador negras: ")
+        print("--- Configuración de la partida ---")
+        
+        nombre_blancas = ""
+        while not nombre_blancas: 
+            nombre_blancas = input("Nombre jugador (Blancas): ")
+            if not nombre_blancas:
+                print("Error: El nombre no puede estar vacío. Intenta de nuevo.")
+
+        nombre_negras = ""
+        while not nombre_negras:
+            nombre_negras = input("Nombre jugador (Negras): ")
+            if not nombre_negras:
+                print("Error: El nombre no puede estar vacío. Intenta de nuevo.")
+        
+        print("-----------------------------------")
+
         self.__game__ = BackgammonGame(nombre_blancas, nombre_negras)
         self.__board__ = self.__game__.get_board()
 
-    # En: cli/cli.py
     def main(self):
         print("¡Bienvenido al juego de Backgammon!")
         print(f"Jugador 1 (Blancas): {self.__game__.get_jugador_blancas().get_nombre()}")
@@ -28,7 +40,7 @@ class BackgammonCLI:
             print(f"Fichas negras sacadas: {estado['fichas_negras_sacadas']}")
             
             print("Tablero:")
-            for pos in range(1, 26): 
+            for pos in range(1, 25): 
                 fichas = estado["tablero"][pos] 
                 print(f"{pos}: {fichas}")
 
@@ -39,10 +51,16 @@ class BackgammonCLI:
                 if tirar.lower() == "s":
                     dados = self.__game__.tirar_dados()
                     print(f"Dados tirados: {dados}")
+                    if not self.__game__.tiene_movimientos_posibles():
+                        print("!! No hay movimientos posibles. Turno perdido. !!")
+                        while self.__game__.get_dados():
+                            self.__game__.usar_dados(self.__game__.get_dados()[0])
+                        continue
                 else:
                     print("Debés tirar los dados para jugar.")
                     continue
 
+                    
             print(f"Movimientos disponibles: {self.__game__.get_dados()}")
             print("Opciones:")
             print("1: Mover ficha")
@@ -58,7 +76,7 @@ class BackgammonCLI:
                     
                     barra_rival_antes = 0
                     rival_name = ""
-                    ficha_actual = self.__game__.get_jugador_actual().__color__
+                    ficha_actual = self.__game__.get_jugador_actual().get_color()
 
                     if ficha_actual == "Blancas":
                         rival_name = self.__game__.get_jugador_negras().get_nombre()
@@ -102,9 +120,8 @@ class BackgammonCLI:
                 else:
                     print("Opción no válida.")
             
-            except (FichaEnBarError, DadoNoDisponibleError, DadosNoTiradosError, MovimientoInvalidoError, SinMovimientosPosiblesError, PuntoOcupadoError, DireccionInvalidaError, MovimientoFueraDeRangoError) as e:
+            except (FichaEnBarError, DadoNoDisponibleError, DadosNoTiradosError, MovimientoInvalidoError, PuntoOcupadoError, DireccionInvalidaError, MovimientoFueraDeRangoError, ValueError) as e:
                 print(f"Error: {e}")
-                continue
             print(f"Movimientos restantes: {self.__game__.get_dados()}")
             if not self.__game__.get_dados():
                 self.__game__.cambio_turnos()

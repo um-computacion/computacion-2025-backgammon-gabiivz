@@ -3,7 +3,7 @@ from core.backgammongame import BackgammonGame
 from core.board import Board
 from core.player import Player
 from core.dice import Dice
-from core.exceptions import BackgammonError, MovimientoInvalidoError, FichaEnBarError, DadoNoDisponibleError, PuntoOcupadoError, DireccionInvalidaError, MovimientoFueraDeRangoError, SinMovimientosPosiblesError, TurnoInvalidoError, DadosNoTiradosError, PartidaFinalizadaError
+from core.exceptions import BackgammonError, MovimientoInvalidoError, FichaEnBarError, DadoNoDisponibleError, PuntoOcupadoError, DireccionInvalidaError, MovimientoFueraDeRangoError, DadosNoTiradosError
 
 class TestBackgammonGame(unittest.TestCase):
 
@@ -59,8 +59,6 @@ class TestBackgammonGame(unittest.TestCase):
         game = BackgammonGame("Gabi", "Gabo")
         jugador = game.get_jugador_blancas()
         self.assertIsInstance(jugador, Player)
-        # Nota: Asumo que corregiste la nomenclatura en Player a __nombre__ y __color__
-        # Si no lo hiciste, estos tests fallarán.
         self.assertEqual(jugador.get_color(), "Blancas") 
         self.assertEqual(jugador.get_nombre(), "Gabi")
 
@@ -172,7 +170,7 @@ class TestBackgammonGame(unittest.TestCase):
 
     def test_cubre_movimiento_regular_blancas_stack(self):
         """Testea movimiento regular de blancas apilando fichas."""
-        game = BackgammonGame("Gabi", "Gabo") # Turno de Blancas
+        game = BackgammonGame("Gabi", "Gabo")
         game.__dado__.__movimientos__ = [4, 2]
         board = game.get_board()
         board.__board__[22] = ['Blancas'] 
@@ -300,7 +298,7 @@ class TestBackgammonGame(unittest.TestCase):
 
     def test_cubre_sacar_ficha_con_fichas_fuera(self):
         """Testea error al sacar ficha cuando aún hay fichas fuera de la casa."""
-        game = BackgammonGame("Gabi", "Gabo") # Turno Blancas
+        game = BackgammonGame("Gabi", "Gabo")
         game.__dado__.__movimientos__ = [3, 4]
         board = game.get_board()
         board.__board__[10] = ['Blancas']
@@ -319,6 +317,112 @@ class TestBackgammonGame(unittest.TestCase):
         self.assertEqual(game.get_dados(), [6]) 
         self.assertEqual(game.estado_actual()["fichas_blancas_sacadas"], 1)
         self.assertEqual(board.get_posicion(4), [])
+    
+    def test_tiene_movimientos_posibles_true_normal(self):
+        """Testea que hay movimientos en la configuración inicial."""
+        game = BackgammonGame("Gabi", "Gabo")
+        game.__dado__.__movimientos__ = [1, 2]
+        self.assertTrue(game.tiene_movimientos_posibles())
+
+    def test_tiene_movimientos_posibles_atascado_en_barra_blancas(self):
+        """Testea que no hay movimientos si las salidas del bar están bloqueadas (Blancas)."""
+        game = BackgammonGame("Gabi", "Gabo")
+        game.__dado__.__movimientos__ = [1, 3]
+        
+        board = game.get_board()
+        board.__board__ = [[] for _ in range(28)]
+        board.__board__[25] = ["Blancas"]
+        board.__board__[24] = ["Negras", "Negras"]
+        board.__board__[22] = ["Negras", "Negras"] 
+        
+        self.assertFalse(game.tiene_movimientos_posibles())
+
+    def test_tiene_movimientos_posibles_puede_salir_barra_blancas(self):
+        """Testea que hay movimientos si una salida del bar está abierta (Blancas)."""
+        game = BackgammonGame("Gabi", "Gabo")
+        game.__dado__.__movimientos__ = [1, 3]
+
+        board = game.get_board()
+        board.__board__ = [[] for _ in range(28)]
+        board.__board__[25] = ["Blancas"]
+        board.__board__[24] = ["Negras", "Negras"]
+        board.__board__[22] = ["Negras"] 
+        
+        self.assertTrue(game.tiene_movimientos_posibles())
+
+    def test_tiene_movimientos_posibles_atascado_en_barra_negras(self):
+        """Testea que no hay movimientos si las salidas del bar están bloqueadas (Negras)."""
+        game = BackgammonGame("Gabi", "Gabo")
+        game.cambio_turnos()
+        game.__dado__.__movimientos__ = [2, 4]
+
+        board = game.get_board()
+        board.__board__ = [[] for _ in range(28)]
+        board.__board__[0] = ["Negras"]
+        board.__board__[2] = ["Blancas", "Blancas"]
+        board.__board__[4] = ["Blancas", "Blancas"] 
+        
+        self.assertFalse(game.tiene_movimientos_posibles())
+
+    def test_tiene_movimientos_posibles_atascado_en_tablero_normal(self):
+        """Testea que no hay movimientos si todos los destinos en el tablero están bloqueados."""
+        game = BackgammonGame("Gabi", "Gabo")
+        game.__dado__.__movimientos__ = [1, 2]
+
+        board = game.get_board()
+        board.__board__ = [[] for _ in range(28)]
+        board.__board__[13] = ["Blancas"]
+        board.__board__[12] = ["Negras", "Negras"]
+        board.__board__[11] = ["Negras", "Negras"] 
+        
+        self.assertFalse(game.tiene_movimientos_posibles())
+
+    def test_tiene_movimientos_posibles_atascado_no_puede_sacar_aun(self):
+        """Testea que no hay movimientos si los dados son para sacar, pero aún hay fichas fuera."""
+        game = BackgammonGame("Gabi", "Gabo")
+        game.__dado__.__movimientos__ = [5, 6]
+
+        board = game.get_board()
+        board.__board__ = [[] for _ in range(28)]
+        board.__board__[7] = ["Blancas"]
+        board.__board__[5] = ["Blancas"]
+        board.__board__[2] = ["Negras", "Negras"]
+        board.__board__[1] = ["Negras", "Negras"] 
+        
+        self.assertFalse(game.tiene_movimientos_posibles())
+
+    def test_tiene_movimientos_posibles_true_puede_sacar(self):
+        """Testea que hay movimientos si se pueden sacar fichas."""
+        game = BackgammonGame("Gabi", "Gabo")
+        game.__dado__.__movimientos__ = [5, 6]
+
+        board = game.get_board()
+        board.__board__ = [[] for _ in range(28)]
+        board.__board__[1] = ["Blancas"]
+        board.__board__[4] = ["Blancas"]
+        
+        self.assertTrue(game.tiene_movimientos_posibles())
+
+    def test_tiene_movimientos_posibles_desde_barra(self):
+        """Testea que hay movimientos posibles desde la barra."""
+        game = BackgammonGame("Gabi", "Gabo")
+        board = game.get_board()
+        board.__board__ = [[] for _ in range(28)] 
+        board.__board__[25] = ['Blancas'] 
+        board.__board__[22] = [] 
+        game.__dado__.__movimientos__ = [1, 3] 
+        self.assertTrue(game.tiene_movimientos_posibles())
+
+    def test_mover_ficha_normal_mov(self):
+        """Testea un movimiento normal de ficha."""
+        game = BackgammonGame("Gabi", "Gabo")
+        board = game.get_board()
+        board.__board__[13] = ['Blancas'] 
+        board.__board__[10] = ['Blancas'] 
+        game.__dado__.__movimientos__ = [3] 
+        game.mover_ficha(13, 10)
+        self.assertEqual(game.get_dados(), [])
+        self.assertEqual(board.get_posicion(10), ['Blancas', 'Blancas'])
 
 if __name__ == '__main__':
     unittest.main()
