@@ -34,21 +34,6 @@ class MovimientoFueraDeRangoError(BackgammonError):
     pass
 
 
-class SinMovimientosPosiblesError(BackgammonError):
-    """Error cuando no hay movimientos legales disponibles."""
-    pass
-
-
-class TurnoInvalidoError(BackgammonError):
-    """Error cuando se intenta jugar fuera de turno."""
-    pass
-
-
 class DadosNoTiradosError(BackgammonError):
     """Error cuando se intenta mover sin haber tirado los dados."""
-    pass
-
-
-class PartidaFinalizadaError(BackgammonError):
-    """Error cuando se intenta jugar pero la partida ya terminó."""
     pass

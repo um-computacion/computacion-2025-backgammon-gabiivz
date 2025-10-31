@@ -3,12 +3,12 @@ branch = True
 source = .
 omit =
     */tests/*
-    cli/cli.py
     core/exceptions.py
     */venv/*
     */__pycache__/*
     cli\__init__.py
     core\__init__.py
+    */pygame_ui/*
 
 [report]
 show_missing = True
