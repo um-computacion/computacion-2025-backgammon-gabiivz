@@ -1,6 +1,7 @@
 import random
 
 class Dice:
+    """Clase que representa un par de dados y maneja la lógica de tiradas y movimientos."""
     def __init__(self):
         """Inicializa los dados y la lista de movimientos."""
         self.__dado1__ = 0
@@ -36,10 +37,3 @@ class Dice:
         self.__dado2__ = 0
         self.__movimientos__ = []
         return self.__dado1__, self.__dado2__
-    
-    
-    
-
-
-
-    

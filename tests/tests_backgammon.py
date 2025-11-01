@@ -156,7 +156,7 @@ class TestBackgammonGame(unittest.TestCase):
             game.usar_dados(1)
         self.assertEqual(game.get_dados(), [])
 
-    def test_cubre_movimiento_regular_negras_comer(self):
+    def test_movimiento_regular_negras_comer(self):
         """Testea movimiento regular de negras comiendo una ficha."""
         game = BackgammonGame("Gabi", "Gabo")
         game.cambio_turnos() 
@@ -168,7 +168,7 @@ class TestBackgammonGame(unittest.TestCase):
         self.assertEqual(board.get_posicion(7), ['Negras']) 
         self.assertEqual(board.get_bar_blancas(), ['Blancas']) 
 
-    def test_cubre_movimiento_regular_blancas_stack(self):
+    def test_movimiento_regular_blancas_stack(self):
         """Testea movimiento regular de blancas apilando fichas."""
         game = BackgammonGame("Gabi", "Gabo")
         game.__dado__.__movimientos__ = [4, 2]
@@ -180,7 +180,7 @@ class TestBackgammonGame(unittest.TestCase):
         self.assertEqual(board.get_posicion(18), ['Blancas', 'Blancas'])
         self.assertEqual(board.get_posicion(22), [])
 
-    def test_cubre_mover_blancas_bar_dado_incorrecto(self):
+    def test_mover_blancas_bar_dado_incorrecto(self):
         """Testea mover ficha blanca desde bar con dado incorrecto."""
         game = BackgammonGame("Gabi", "Gabo") 
         game.__dado__.__movimientos__ = [3, 4]
@@ -189,7 +189,7 @@ class TestBackgammonGame(unittest.TestCase):
         with self.assertRaises(DadoNoDisponibleError):
             game.mover_ficha(25, 20)
 
-    def test_cubre_sacar_ficha_blancas_exitoso(self):
+    def test_sacar_ficha_blancas_exitoso(self):
         """Testea sacar una ficha blanca exitosamente."""
         game = BackgammonGame("Gabi", "Gabo")
         game.__dado__.__movimientos__ = [4, 5]
@@ -200,7 +200,7 @@ class TestBackgammonGame(unittest.TestCase):
         self.assertEqual(game.get_dados(), [5])
         self.assertEqual(game.estado_actual()["fichas_blancas_sacadas"], 1)
 
-    def test_cubre_sacar_ficha_negras_dado_mayor(self):
+    def test_sacar_ficha_negras_dado_mayor(self):
         """Testea sacar ficha negra con un dado mayor al necesario."""
         game = BackgammonGame("Gabi", "Gabo")
         game.cambio_turnos() 
@@ -212,7 +212,7 @@ class TestBackgammonGame(unittest.TestCase):
         self.assertEqual(game.get_dados(), [6]) 
         self.assertEqual(game.estado_actual()["fichas_negras_sacadas"], 1)
 
-    def test_cubre_sacar_ficha_dado_invalido(self):
+    def test_sacar_ficha_dado_invalido(self):
         """Testea sacar ficha con un dado inválido."""
         game = BackgammonGame("Gabi", "Gabo")
         game.__dado__.__movimientos__ = [1, 2] 
@@ -222,7 +222,7 @@ class TestBackgammonGame(unittest.TestCase):
         with self.assertRaises(DadoNoDisponibleError):
             game.mover_ficha(4, 26)
 
-    def test_cubre_turno_completo_con_ganador(self):
+    def test_turno_completo_con_ganador(self):
         """Testea que el turno no se considera completo si hay un ganador."""
         game = BackgammonGame("Gabi", "Gabo")
         game.__dado__.__movimientos__ = []
@@ -230,14 +230,14 @@ class TestBackgammonGame(unittest.TestCase):
             game.__fichas_sacadas_blancas__.append("Blancas")
         self.assertFalse(game.turno_completo())
 
-    def test_cubre_mover_ficha_sin_dados_lanza_error(self):
+    def test_mover_ficha_sin_dados_lanza_error(self):
         """Testea que mover ficha sin haber tirado los dados lanza error."""
         game = BackgammonGame("Gabi", "Gabo")
         game.__dado__.__movimientos__ = [] 
         with self.assertRaises(DadosNoTiradosError):
             game.mover_ficha(12, 10)
 
-    def test_cubre_error_blancas_debe_mover_de_bar(self):
+    def test_error_blancas_debe_mover_de_bar(self):
         """Testea error cuando una ficha blanca debe salir del bar."""
         game = BackgammonGame("Gabi", "Gabo") 
         game.__dado__.__movimientos__ = [3, 4]
@@ -246,7 +246,7 @@ class TestBackgammonGame(unittest.TestCase):
         with self.assertRaises(FichaEnBarError):
             game.mover_ficha(12, 8)
 
-    def test_cubre_mover_ficha_negra_desde_bar_dado_invalido(self):
+    def test_mover_ficha_negra_desde_bar_dado_invalido(self):
         """Testea mover ficha negra desde bar con dado inválido."""
         game = BackgammonGame("Gabi", "Gabo")
         game.cambio_turnos() 
@@ -256,7 +256,7 @@ class TestBackgammonGame(unittest.TestCase):
         with self.assertRaises(DadoNoDisponibleError):
             game.mover_ficha(0, 5)
 
-    def test_cubre_movimiento_regular_dado_invalido(self):
+    def test_movimiento_regular_dado_invalido(self):
         """Testea movimiento regular con un dado inválido."""
         game = BackgammonGame("Gabi", "Gabo") 
         game.__dado__.__movimientos__ = [1, 2]  
@@ -265,7 +265,7 @@ class TestBackgammonGame(unittest.TestCase):
         with self.assertRaises(DadoNoDisponibleError):
             game.mover_ficha(12, 8)
 
-    def test_cubre_mover_blancas_desde_bar_exitoso(self):
+    def test_mover_blancas_desde_bar_exitoso(self):
         """Testea mover ficha blanca desde el bar exitosamente."""
         game = BackgammonGame("Gabi", "Gabo")
         game.__dado__.__movimientos__ = [4, 5]
@@ -276,7 +276,7 @@ class TestBackgammonGame(unittest.TestCase):
         self.assertEqual(board.get_posicion(25), [])
         self.assertEqual(board.get_posicion(21), ['Blancas'])
     
-    def test_cubre_mover_desde_bar_dado_invalido(self):
+    def test_mover_desde_bar_dado_invalido(self):
         """Testea mover desde el bar con un dado inválido."""
         game = BackgammonGame("Gabi", "Gabo")
         game.cambio_turnos() 
@@ -286,7 +286,7 @@ class TestBackgammonGame(unittest.TestCase):
         with self.assertRaises(DadoNoDisponibleError):
             game.mover_ficha(0, 5)
 
-    def test_cubre_error_negras_debe_mover_de_bar(self):
+    def test_error_negras_debe_mover_de_bar(self):
         """Testea error cuando una ficha negra debe salir del bar."""
         game = BackgammonGame("Gabi", "Gabo")
         game.cambio_turnos() 
@@ -296,7 +296,7 @@ class TestBackgammonGame(unittest.TestCase):
         with self.assertRaises(FichaEnBarError):
             game.mover_ficha(10, 7) 
 
-    def test_cubre_sacar_ficha_con_fichas_fuera(self):
+    def test_sacar_ficha_con_fichas_fuera(self):
         """Testea error al sacar ficha cuando aún hay fichas fuera de la casa."""
         game = BackgammonGame("Gabi", "Gabo")
         game.__dado__.__movimientos__ = [3, 4]
@@ -306,7 +306,7 @@ class TestBackgammonGame(unittest.TestCase):
         with self.assertRaises(MovimientoInvalidoError):
             game.mover_ficha(4, 26)
 
-    def test_cubre_sacar_ficha_blancas_dado_mayor(self):
+    def test_sacar_ficha_blancas_dado_mayor(self):
         """Testea sacar ficha blanca con un dado mayor al necesario."""
         game = BackgammonGame("Gabi", "Gabo") 
         game.__dado__.__movimientos__ = [6, 5]   

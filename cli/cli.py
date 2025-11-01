@@ -5,6 +5,8 @@ from core.exceptions import (
 )
 """ejecutar con esto:python -m cli.cli"""
 class BackgammonCLI:
+    """Interfaz de línea de comandos para jugar al Backgammon.
+    """
     def __init__(self):
         print("--- Configuración de la partida ---")
         

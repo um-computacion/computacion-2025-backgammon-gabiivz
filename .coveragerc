@@ -9,6 +9,7 @@ omit =
     cli\__init__.py
     core\__init__.py
     */pygame_ui/*
+    generate_reports.py 
 
 [report]
 show_missing = True

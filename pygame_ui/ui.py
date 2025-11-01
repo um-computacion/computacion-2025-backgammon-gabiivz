@@ -6,11 +6,12 @@ from core.exceptions import BackgammonError
 from pygame_ui.board_game import BoardRenderer 
 
 class PygameUI:
+    """Clase que representa la interfaz gráfica del juego de Backgammon usando Pygame."""
     def __init__(self):
         """
         Inicializa Pygame, la pantalla, las fuentes,
         lanza la pantalla de nombres e inicializa el juego.
-        Ejecución: python -m pygame_ui.ui 
+        Ejecución: python -m pygame_ui.ui
         """
         pygame.init()
         

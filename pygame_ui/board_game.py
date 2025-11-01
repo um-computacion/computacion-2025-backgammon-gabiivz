@@ -11,6 +11,7 @@ Responsabilidad:
 import pygame
 
 class BoardRenderer:
+    """Clase responsable de renderizar el tablero de Backgammon usando Pygame."""
     def __init__(self, pantalla, alto_tablero=None):
         """Inicializa el renderer del tablero, calculando geometría y paleta de colores."""
         self.pantalla = pantalla
