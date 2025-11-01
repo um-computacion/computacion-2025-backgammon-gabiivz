@@ -4,6 +4,7 @@ from core.player import Player
 from core.exceptions import BackgammonError, MovimientoInvalidoError, FichaEnBarError, DadoNoDisponibleError, PuntoOcupadoError, DireccionInvalidaError, MovimientoFueraDeRangoError, DadosNoTiradosError
 
 class BackgammonGame:
+    """Clase principal que maneja la lógica del juego de Backgammon."""
     def __init__(self, nombre_blancas, nombre_negras):
         """Inicializa la partida, creando el tablero, los dados y los jugadores."""
         self.__board__ = Board()
@@ -214,18 +215,3 @@ class BackgammonGame:
         if negras_sacadas == 15:
             return self.__jugador_negras__.get_nombre()
         return None
-    
-    
-
-
-
-
-
-
-
-
-
-
-
-
-

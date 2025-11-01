@@ -1,6 +1,6 @@
 from core.exceptions import BackgammonError, MovimientoInvalidoError, FichaEnBarError, DadoNoDisponibleError, PuntoOcupadoError, DireccionInvalidaError, MovimientoFueraDeRangoError, DadosNoTiradosError
 class Board:
-    
+    """Clase que representa el tablero de Backgammon y maneja la lógica de movimiento de fichas."""
     def __init__(self):
         """Inicializa el tablero con la configuración estándar de Backgammon."""
         self.__board__ = [[] for _ in range(28)] 

@@ -24,12 +24,32 @@ El formato sigue Keep a Changelog y el proyecto utiliza Semantic Versioning.
 - Se implementaron tests para los métodos `get_board`, `get_jugador_blancas`, `get_jugador_negras` y `cambio_turnos`.
 - Se añadieron tests para la clase `Dice` usando `patch` para simular tiradas de dados específicas.
 - Se agregaron tests para la clase `Player`, verificando la correcta creación y obtención de sus atributos.
+- Se creó la carpeta `pygame_ui` con la interfaz gráfica completa del juego.
+- Se implementó la clase `PygameUI` en `ui.py` para gestionar la interfaz gráfica con Pygame, incluyendo:
+  - Pantalla de inicio para ingresar nombres de jugadores
+  - Manejo de eventos de clic del mouse
+  - Sistema de mensajes visuales (errores, información, turno)
+  - Detección automática de ganador
+- Se implementó la clase `BoardRenderer` en `board_game.py` para renderizar el tablero de backgammon con:
+  - Dibujo de 24 triángulos del tablero
+  - Representación visual de fichas blancas y negras
+  - Barras laterales para fichas comidas
+  - Contador de fichas sacadas del tablero
+  - Mapeo de clicks a puntos del tablero
+- Se completó la documentación del proyecto en `JUSTIFICACION.md`, incluyendo:
+  - Justificación de las clases PygameUI y BoardRenderer
+  - Decisiones de diseño de la interfaz gráfica
+  - Diagrama UML completo con todas las clases
+  - Análisis de principios SOLID aplicados
 
 ### Changed
 - Se refactorizó la clase `BackgammonGame` para centralizar la lógica de las reglas del juego y simplificar la interacción con el `Board`.
 - Se modificó la clase `Board` para delegar las validaciones de movimientos complejos a `BackgammonGame`, enfocándose solo en el estado del tablero.
 - Se mejoró la legibilidad de todos los tests unitarios añadiendo docstrings descriptivos en español a cada función de prueba.
 - Se ajustaron los tests existentes para reflejar la nueva arquitectura y el acceso a los atributos de las clases.
+- Se realizó una limpieza general del código, mejorando la organización y eliminando código redundante o comentado.
+- Se refactorizó el código para mejorar la separación de responsabilidades entre las capas de lógica de negocio y presentación.
+- Se actualizó la estructura del proyecto para incluir dos interfaces independientes (CLI y Pygame) que usan el mismo core.
 
 ### Fixed
 - Se corrigió el acceso a atributos privados en los tests para asegurar que las pruebas sean robustas y no dependan de la implementación interna.

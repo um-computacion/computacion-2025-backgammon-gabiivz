@@ -1,3 +1,19 @@
+# Automated Reports
+## Coverage Report
+```text
+Name                     Stmts   Miss Branch BrPart  Cover   Missing
+--------------------------------------------------------------------
+cli\cli.py                 105      7     42      5    92%   85-86, 96, 99, 127, 134-135
+core\backgammongame.py     136      2     60      2    98%   72, 151
+core\board.py              122      2     62      3    97%   53->exit, 116, 147
+core\dice.py                22      0      2      0   100%
+core\player.py              10      0      0      0   100%
+--------------------------------------------------------------------
+TOTAL                      395     11    166     10    96%
+
+```
+## Pylint Report
+```text
 ************* Module core.backgammongame
 core\backgammongame.py:4:0: C0301: Line too long (201/100) (line-too-long)
 core\backgammongame.py:22:0: C0303: Trailing whitespace (trailing-whitespace)
@@ -50,7 +66,7 @@ core\backgammongame.py:217:0: C0304: Final newline missing (missing-final-newlin
 core\backgammongame.py:1:0: C0114: Missing module docstring (missing-module-docstring)
 core\backgammongame.py:33:8: R1705: Unnecessary "else" after "return", remove the "else" and de-indent the code inside it (no-else-return)
 core\backgammongame.py:112:11: R0916: Too many boolean expressions in if statement (6/5) (too-many-boolean-expressions)
-core\backgammongame.py:143:16: W0707: Consider explicitly re-raising using 'except MovimientoInvalidoError as exc' and 'raise MovimientoInvalidoError('No puedes sacar fichas hasta que todas estén en tu casa.') from exc' (raise-missing-from)
+core\backgammongame.py:143:16: W0707: Consider explicitly re-raising using 'except MovimientoInvalidoError as exc' and 'raise MovimientoInvalidoError('No puedes sacar fichas hasta que todas estn en tu casa.') from exc' (raise-missing-from)
 core\backgammongame.py:146:12: R1705: Unnecessary "else" after "return", remove the "else" and de-indent the code inside it (no-else-return)
 core\backgammongame.py:99:4: R0912: Too many branches (23/12) (too-many-branches)
 core\backgammongame.py:99:4: R0915: Too many statements (60/50) (too-many-statements)
@@ -111,7 +127,7 @@ core\board.py:93:33: W0613: Unused argument 'origen' (unused-argument)
 core\board.py:143:12: R1703: The if statement can be replaced with 'return bool(test)' (simplifiable-if-statement)
 core\board.py:143:12: R1705: Unnecessary "else" after "return", remove the "else" and de-indent the code inside it (no-else-return)
 core\board.py:127:4: R0911: Too many return statements (7/6) (too-many-return-statements)
-core\board.py:166:12: W0707: Consider explicitly re-raising using 'except MovimientoInvalidoError as exc' and 'raise MovimientoInvalidoError('No puedes sacar fichas hasta que todas estén en tu casa.') from exc' (raise-missing-from)
+core\board.py:166:12: W0707: Consider explicitly re-raising using 'except MovimientoInvalidoError as exc' and 'raise MovimientoInvalidoError('No puedes sacar fichas hasta que todas estn en tu casa.') from exc' (raise-missing-from)
 core\board.py:1:0: W0611: Unused BackgammonError imported from core.exceptions (unused-import)
 core\board.py:1:0: W0611: Unused FichaEnBarError imported from core.exceptions (unused-import)
 core\board.py:1:0: W0611: Unused DadoNoDisponibleError imported from core.exceptions (unused-import)
@@ -524,3 +540,5 @@ tests\tests_player.py:4:0: C0115: Missing class docstring (missing-class-docstri
 ------------------------------------------------------------------
 Your code has been rated at 6.55/10 (previous run: 6.55/10, +0.00)
 
+
+```

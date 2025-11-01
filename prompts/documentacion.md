@@ -1,10 +1,20 @@
 # Prompt: Reglas completas del Backgammon para implementar en código
 
-### Herramienta utilizada:
-Claude.ai
+## Modelo/Herramienta utilizada:
+Claude.ai (Claude 3.5 Sonnet)
 
-## Contexto
-Necesito implementar un juego de Backgammon en Python y requiero conocer todas las reglas del juego para poder programar la lógica correctamente.
+## Texto exacto del Prompt:
+
+"Necesito implementar un juego de Backgammon en Python y requiero conocer todas las reglas del juego para poder programar la lógica correctamente. ¿Me puedes explicar las reglas completas del Backgammon incluyendo: configuración inicial, movimientos, capturas, bearing off, y condiciones de victoria?"
+
+## Instrucciones del sistema:
+No se aplicaron instrucciones de sistema personalizadas.
+
+## Respuesta completa de la IA:
+
+## Respuesta completa de la IA:
+
+Claude proporcionó una explicación detallada de todas las reglas de Backgammon:
 
 ### Objetivo del juego
 Ser el primer jugador en mover todas sus fichas (checkers) fuera del tablero.
@@ -67,7 +77,25 @@ Ser el primer jugador en mover todas sus fichas (checkers) fuera del tablero.
 - El jugador puede **ofrecer doblar** antes de tirar dados
 - El oponente puede **aceptar** (continúa el juego por el doble de puntos) o **rendirse** (pierde los puntos actuales)
 
-### Condiciones de victoria
+- Detectar condiciones de victoria
+
+---
+
+## Resultado obtenido:
+**Usado como referencia**
+
+La información proporcionada por Claude fue utilizada como documentación de referencia durante todo el desarrollo del proyecto. Se consultó especialmente para:
+- Implementar la lógica de movimientos válidos en `Board.movimiento_valido()`
+- Validar capturas en `Board.comer_ficha()`
+- Implementar bearing off en `Board.sacar_ficha()`
+- Verificar condiciones de victoria en `BackgammonGame.get_ganador()`
+
+No se tradujo directamente a código, sino que sirvió como guía para entender las reglas y tomar decisiones de diseño.
+
+## Referencias a archivos finales:
+- `core/board.py` - Implementación de reglas de movimiento y captura
+- `core/backgammongame.py` - Lógica de juego y condiciones de victoria
+- `ReadMe.md` - Documentación del proyecto con reglas resumidas
 #### Victoria simple (1 punto):
 - Sacas todas tus fichas antes que el oponente
 

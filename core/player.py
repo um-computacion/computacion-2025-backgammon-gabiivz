@@ -1,4 +1,5 @@
 class Player:
+    """Clase que representa a un jugador en el juego de Backgammon."""
     def __init__(self, nombre, color):
         """Inicializa un jugador con su nombre y color."""
         self.__nombre__= nombre
@@ -15,11 +16,3 @@ class Player:
     def get_color(self):
         """Devuelve el color del jugador ('Blancas' o 'Negras')."""
         return self.__color__
-
-
-        
-    
-
-
-        
-    
