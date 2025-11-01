@@ -1,6 +1,5 @@
 from core.backgammongame import BackgammonGame
-from core.exceptions import (
-    BackgammonError, MovimientoFueraDeRangoError, MovimientoInvalidoError,
+from core.exceptions import ( MovimientoFueraDeRangoError, MovimientoInvalidoError,
     FichaEnBarError, DadoNoDisponibleError, DadosNoTiradosError, DireccionInvalidaError, PuntoOcupadoError
 )
 """ejecutar con esto:python -m cli.cli"""

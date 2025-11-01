@@ -2,8 +2,7 @@ import unittest
 from core.backgammongame import BackgammonGame
 from core.board import Board
 from core.player import Player
-from core.dice import Dice
-from core.exceptions import BackgammonError, MovimientoInvalidoError, FichaEnBarError, DadoNoDisponibleError, PuntoOcupadoError, DireccionInvalidaError, MovimientoFueraDeRangoError, DadosNoTiradosError
+from core.exceptions import MovimientoInvalidoError, FichaEnBarError, DadoNoDisponibleError, DadosNoTiradosError
 
 class TestBackgammonGame(unittest.TestCase):
 
