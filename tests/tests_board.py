@@ -1,6 +1,6 @@
 import unittest
 from core.board import Board
-from core.exceptions import BackgammonError, MovimientoInvalidoError, FichaEnBarError, DadoNoDisponibleError, PuntoOcupadoError, DireccionInvalidaError, MovimientoFueraDeRangoError, DadosNoTiradosError
+from core.exceptions import MovimientoInvalidoError, PuntoOcupadoError, DireccionInvalidaError, MovimientoFueraDeRangoError
 
 
 class TestBoard(unittest.TestCase):

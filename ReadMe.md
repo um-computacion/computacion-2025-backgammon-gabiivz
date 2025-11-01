@@ -46,11 +46,20 @@ venv\Scripts\activate
 Bash
 
 pip install -r requirements.txt
+
 🎮 Uso
-Jugar en modo consola
+
+El proyecto se puede ejecutar de dos maneras:
+
+1. Jugar en modo consola (CLI)
+```bash
+python -m cli.cli
+
+2. Jugar en modo gráfico (Pygame)
 Bash
 
-python -m cli.cli
+python -m pygame_ui.ui
+
 Ejecutar tests
 Todos los tests:
 

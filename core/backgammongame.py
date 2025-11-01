@@ -1,7 +1,7 @@
 from core.board import Board
 from core.dice import Dice
 from core.player import Player
-from core.exceptions import BackgammonError, MovimientoInvalidoError, FichaEnBarError, DadoNoDisponibleError, PuntoOcupadoError, DireccionInvalidaError, MovimientoFueraDeRangoError, DadosNoTiradosError
+from core.exceptions import MovimientoInvalidoError, FichaEnBarError, DadoNoDisponibleError, DadosNoTiradosError
 
 class BackgammonGame:
     """Clase principal que maneja la lógica del juego de Backgammon."""

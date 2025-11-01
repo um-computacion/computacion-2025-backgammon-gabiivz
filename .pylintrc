@@ -1,31 +1,31 @@
 [design]
-# Maximum number of arguments for functions/methods.
-max-args=5
-
-# Maximum number of statements in a function/method.
-max-statements=50
-
-# Maximum number of local variables in a function/method.
-max-locals=15
-
-# Maximum number of return statements in a function/method.
-max-returns=6
-
-# Maximum number of branches in a function/method.
-max-branches=12
-
-# Maximum number of nested blocks in a function/method.
+# Límites aumentados para ser realistas con un proyecto de UI y lógica de juego
+max-args=10
+max-statements=100
+max-locals=25
+max-returns=10
+max-branches=30
 max-nested-blocks=5
-
-# Maximum number of public methods in a class.
-max-public-methods=20
-
-# Maximum number of attributes in a class.
-max-attributes=7
-
-# Minimum number of public methods in a class.
-min-public-methods=2
+max-public-methods=50
+max-attributes=30
+min-public-methods=1
 
 [REPORTS]
-# Disable the generation of reports.
 reports=no
+
+[FORMAT]
+# Aumente el límite de longitud de línea a 120
+max-line-length=120
+
+[TYPECHECK]
+generated-members=pygame.*
+
+[MESSAGES CONTROL]
+disable=
+    C0114, # missing-module-docstring
+    C0115, # missing-class-docstring
+    C0116, # missing-function-docstring
+    C0303, # trailing-whitespace
+    C0304, # missing-final-newline
+    C0305, # trailing-newlines
+
