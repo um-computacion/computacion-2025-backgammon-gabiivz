@@ -118,8 +118,6 @@ Usar posiciones especiales (0, 25, 26) simplifica la lógica:
 - `sacar_ficha()`: Bearing off
 - `es_destino_legal()`: Verifica si un punto está bloqueado
 
-Esta clase es la más compleja del proyecto porque contiene toda la lógica específica de las reglas de Backgammon.
-
 ---
 
 ### 2.4. Clase `BackgammonGame`
@@ -244,7 +242,6 @@ self.radio_ficha = self.ancho_triangulo // 3
 **Ventajas de separar el renderer:**
 - Si quiero cambiar colores, solo modifico `BoardRenderer`
 - Si quiero otra UI (ej: web con canvas), reutilizo la lógica de mapeo
-- Los tests de `PygameUI` pueden mockear el renderer fácilmente
 
 ---
 
@@ -557,7 +554,7 @@ TOTAL                      395     11    166     10    96%
 - Representación en string
 
 #### **tests_board.py**
-- **Cobertura:** 97%
+- **Cobertura:** 96%
 - **Estrategia:** Testing exhaustivo de reglas de Backgammon
 
 **Casos críticos testeados:**
@@ -576,7 +573,7 @@ TOTAL                      395     11    166     10    96%
 - Destino vacío vs destino con 1 ficha vs destino con 2+ fichas
 - Fichas del mismo color vs color diferente
 
-**Cómo se logró 97%:**
+**Cómo se logró 96%:**
 - Se identificaron ramas no cubiertas con `coverage html`
 - Se agregaron tests específicos para cada rama (ej: `test_comer_ficha_destino_una`)
 - Se testearon casos donde condiciones son False (no solo True)
