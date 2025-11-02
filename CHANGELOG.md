@@ -120,3 +120,9 @@ El formato sigue Keep a Changelog y el proyecto utiliza Semantic Versioning.
 - Corrección en los métodos validar_movimiento y mover_ficha para contemplar casos inválidos de destino y origen.
 - Ajuste en devolver_ficha_comida para cubrir casos de fichas del mismo color y del color opuesto.
 - Agregados tests adicionales en la clase Board para incrementar la cobertura hasta 100%.
+
+[UNRELEASED]: https://github.com/um-computacion/computacion-2025-backgammon-gabiivz/compare/v1.3.0...HEAD
+[1.3.0]: https://github.com/um-computacion/computacion-2025-backgammon-gabiivz/compare/v1.2.0...v1.3.0
+[1.2.0]: https://github.com/um-computacion/computacion-2025-backgammon-gabiivz/compare/v1.1.0...v1.2.0
+[1.1.0]: https://github.com/um-computacion/computacion-2025-backgammon-gabiivz/compare/v1.0.0...v1.1.0
+[1.0.0]: https://github.com/um-computacion/computacion-2025-backgammon-gabiivz/releases/tag/v1.0.0

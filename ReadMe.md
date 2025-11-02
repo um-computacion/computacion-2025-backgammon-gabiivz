@@ -1,6 +1,9 @@
 🎲 Backgammon
+
 Alumno: Gabriela Vaca 
+
 Carrera: Ingeniería en Informática 
+
 Ciclo lectivo: 2025
 
 📋 Descripción
@@ -20,7 +23,7 @@ Exceptions: Define excepciones personalizadas para manejar todos los errores esp
 Estructura adicional
 cli/: Interfaz por línea de comandos para jugar en la terminal.
 
-pygame_ui/: (Opcional si ya lo tienes) Interfaz gráfica con Pygame.
+pygame_ui/: Interfaz gráfica con Pygame.
 
 htmlcov/: Reportes de cobertura de código en formato HTML.
 
@@ -140,13 +143,8 @@ DireccionInvalidaError: Dirección de movimiento incorrecta
 
 MovimientoFueraDeRangoError: Movimiento fuera del tablero
 
-SinMovimientosPosiblesError: No hay movimientos legales
-
-TurnoInvalidoError: Jugador incorrecto intenta mover
-
 DadosNoTiradosError: Intento de mover sin tirar dados
 
-PartidaFinalizadaError: La partida ya terminó
 
 🎯 Reglas del Backgammon
 El Backgammon es un juego de mesa para dos jugadores que combina estrategia y suerte. Cada jugador tiene 15 fichas que debe mover alrededor del tablero según el resultado de dos dados.
